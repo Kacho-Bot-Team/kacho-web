@@ -233,10 +233,13 @@
 .impact-section { padding-top: 100px; padding-bottom: 70px; }
 .impact-section .section-intro { max-width: 1050px; }
 .impact-section .section-intro > p:last-child { max-width: 710px; }
-.fixed-value-graphic { margin-top: 40px; }
+.fixed-value-graphic { max-width: 1280px; margin: 40px auto 0; }
 .fixed-value-graphic picture, .fixed-value-graphic img { display: block; width: 100%; }
 .fixed-value-graphic img { height: auto; }
 .fixed-value-graphic figcaption { max-width: 970px; font-size: 12px; line-height: 1.75; color: var(--muted); margin-top: 20px; }
+@media (max-width: 900px) {
+  .fixed-value-graphic { max-width: 520px; }
+}
 .offer-copy > .eyebrow { font-size: 10px; color: var(--accent); margin: 0 0 20px; }
 .service-picker { display: grid; gap: 5px; margin-top: 22px; }
 .service-picker label { font-size: 14px; line-height: 1.5; display: flex; align-items: center; gap: 12px; min-height: 44px; cursor: pointer; }
