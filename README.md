@@ -22,8 +22,9 @@ Se recorren dentro de un mockup de celular con interfaz de WhatsApp; las llamada
 tienen su propia pantalla y el tablero se presenta como un reporte compartido.
 Son guiones y datos ilustrativos; no llaman a proveedores ni envían mensajes.
 La personalización muestra nombre, color y logo en el navegador. El logo no se
-sube ni se conserva al recargar. El simulador compara dos coberturas de atención
-con el mismo volumen de entrada y las mismas tasas de cotización y cierre.
+sube ni se conserva al recargar. La sección de valor muestra un proceso real de
+venta de pasto sintético de forma anónima y una proyección ilustrativa fija,
+separada del caso. No publica cifras de clientes ni resultados atribuidos.
 
 `public/product-config.js` concentra únicamente configuración apta para publicación:
 
@@ -49,7 +50,7 @@ pnpm test
 `package.json` y `pnpm-lock.yaml` fijan la dependencia de pruebas. Las pruebas
 levantan y cierran su propio servidor local; no requieren modificar el puerto de una preview.
 Cubren los diez giros, avance y reinicio, acciones de las ocho demos, personalización,
-solicitud y descarga, enlaces por especialista, simulador y tamaños de 320 a 1440 px.
+solicitud y descarga, enlaces por especialista y tamaños de 320 a 1440 px.
 Los números de prueba solo se inyectan en el navegador del test y nunca se abren.
 Esta suite no verifica bots reales, Safari ni dispositivos físicos.
 

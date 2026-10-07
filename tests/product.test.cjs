@@ -93,22 +93,6 @@ test('nombre y logo locales se aplican a la marca y llegan a la solicitud', asyn
   await page.close();
 });
 
-test('el simulador conserva los denominadores y separa los escenarios de los resultados', async () => {
-  const page = await pageAt();
-  await page.locator('#volume-input').fill('1000');
-  await page.locator('#coverage-current').fill('50');
-  await page.locator('#coverage-target').fill('90');
-  await page.locator('#quote-rate').fill('30');
-  await page.locator('#close-rate').fill('20');
-  assert.equal(await page.locator('#impact-attended').textContent(), '+400');
-  assert.equal(await page.locator('#impact-quotes').textContent(), '+120');
-  assert.equal(await page.locator('#impact-sales').textContent(), '+24');
-  await page.locator('#coverage-target').fill('20');
-  assert.equal(await page.locator('#impact-attended').textContent(), '−300');
-  assert.match(await page.locator('#beneficios').innerText(), /hipotético/);
-  await page.close();
-});
-
 test('demos y personalización caben en móvil y respetan reducir movimiento', async () => {
   for (const width of [320, 390, 768, 1440]) {
     const page = await pageAt(width);

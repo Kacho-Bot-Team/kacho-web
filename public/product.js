@@ -5,7 +5,6 @@ window.KachoProduct = (() => {
   const $$ = selector => [...document.querySelectorAll(selector)];
   const safe = value => String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
   const arrow = '<svg class="icon" aria-hidden="true"><use href="#arrow"/></svg>';
-  const number = new Intl.NumberFormat('es-MX');
   const messageMeta = (outgoing = false) => `<div class="message-meta"><time>9:41</time>${outgoing ? '<svg viewBox="0 0 20 12" aria-label="Leído"><path d="m1 6 4 4L14 1M10 8l2 2 7-9"/></svg>' : ''}</div>`;
   const FEATURES = {
     conversacion: ['Conversación por WhatsApp', 'Cada consulta avanza con una pregunta útil y un siguiente paso.'],
@@ -269,29 +268,6 @@ window.KachoProduct = (() => {
     $('#company').focus({preventScroll:true});
   });
 
-  function updateImpact() {
-    const bounded = id => Math.max(0,Math.min(100, Number($(id).value)||0));
-    const volume = Number($('#volume-input').value), current = bounded('#coverage-current'), target = bounded('#coverage-target');
-    const quote = bounded('#quote-rate')/100, close = bounded('#close-rate')/100;
-    $('#volume-value').textContent=number.format(volume);
-    $('#current-value').textContent=current+'%'; $('#target-value').textContent=target+'%';
-    const stages = rate => {
-      const attended=Math.round(volume*rate/100), quotes=Math.round(attended*quote);
-      return [volume,attended,quotes,Math.round(quotes*close)];
-    };
-    const before=stages(current), after=stages(target), labels=['Consultas recibidas','Atendidas','Cotizaciones','Ventas'];
-    $('#impact-chart').innerHTML=labels.map((label,i)=>`<div class="funnel-row"><span>${label}</span><div class="funnel-pair"><div><i style="--bar:${before[i]/volume*100}%"></i><b>${number.format(before[i])}</b></div><div><i style="--bar:${after[i]/volume*100}%"></i><b>${number.format(after[i])}</b></div></div></div>`).join('');
-    $('#impact-chart').setAttribute('aria-label',labels.map((label,i)=>`${label}: actual ${before[i]}, objetivo ${after[i]}`).join('. '));
-    ['attended','quotes','sales'].forEach((id,i)=> {
-      const delta=after[i+1]-before[i+1];
-      $('#impact-'+id).textContent=(delta<0?'−':delta>0?'+':'')+number.format(Math.abs(delta));
-    });
-  }
-  ['volume-input','coverage-current','coverage-target','quote-rate','close-rate'].forEach(id => $('#'+id).addEventListener('input', updateImpact));
-  ['quote-rate','close-rate'].forEach(id => $('#'+id).addEventListener('change', () => {
-    $('#'+id).value=String(Math.max(0,Math.min(100,Number($('#'+id).value)||0))); updateImpact();
-  }));
-  updateImpact(); updateBrand();
   const money = new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:0});
   for (const [id,key] of [['setup-price','setupMXN'],['monthly-price','monthlyMXN']]) {
     const value=window.KACHO_CONFIG?.pricing?.[key];
