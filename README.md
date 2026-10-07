@@ -23,8 +23,9 @@ tienen su propia pantalla y el tablero se presenta como un reporte compartido.
 Son guiones y datos ilustrativos; no llaman a proveedores ni envían mensajes.
 La personalización muestra nombre, color y logo en el navegador. El logo no se
 sube ni se conserva al recargar. La sección de valor muestra un proceso real de
-venta de pasto sintético de forma anónima y una proyección ilustrativa fija,
-separada del caso. No publica cifras de clientes ni resultados atribuidos.
+venta de pasto sintético de forma anónima y una sola infografía SVG estática,
+con una proyección ilustrativa fija. La versión móvil adapta la composición,
+conservando los mismos datos. No publica cifras de clientes ni resultados atribuidos.
 
 `public/product-config.js` concentra únicamente configuración apta para publicación:
 
