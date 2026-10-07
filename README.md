@@ -26,12 +26,12 @@ sube ni se conserva al recargar. La sección de valor muestra un proceso real de
 venta de pasto sintético de forma anónima y una sola escena SVG estática:
 «Antes / Con Kacho», lado a lado también en móvil, con «Abre la llave de los leads».
 El escenario inicial tiene 1,000 leads, 50% de atención, 27% de cotización y 18%
-de cierre: 500 atendidos, 135 cotizaciones y 24.3 ventas estimadas (se muestra ≈24).
+de calificación: 500 atendidos, 135 cotizaciones y 24.3 leads calificados (se muestra ≈24).
 Con Kacho y captación ampliada: 5,000 leads, 100% de atención, 30% de cotización
-y 20% de cierre: 5,000 atendidos, 1,500 cotizaciones y 300 ventas estimadas.
+y 20% de calificación: 5,000 atendidos, 1,500 cotizaciones y 300 leads calificados.
 Las tasas iniciales son 10% menores en términos relativos (30 × 0.9 y 20 × 0.9).
-Los incrementos son +4,500 atendidos, +1,365 cotizaciones y ≈+276 ventas estimadas.
-Cada ficha equivale a cinco ventas, con fracción proporcional en el escenario
+Los incrementos son +4,500 atendidos, +1,365 cotizaciones y ≈+276 leads calificados.
+Cada ficha equivale a cinco leads calificados, con fracción proporcional en el escenario
 inicial. La comparación combina flujo, cobertura y tasas; la captación se trabaja
 por separado. Es una proyección fija, no una mejora medida atribuible al bot.
 La versión móvil adapta el recorrido y mantiene los mismos datos. Ambas imágenes
