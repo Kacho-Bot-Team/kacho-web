@@ -24,9 +24,11 @@ Son guiones y datos ilustrativos; no llaman a proveedores ni envían mensajes.
 La personalización muestra nombre, color y logo en el navegador. El logo no se
 sube ni se conserva al recargar. La sección de valor muestra un proceso real de
 venta de pasto sintético de forma anónima y una sola escena SVG estática:
-Kacho, un anillo de cobertura, cotizaciones y 54 fichas de ventas estimadas
-(30 de partida y 24 adicionales). Conserva la proyección ilustrativa fija;
-la versión móvil adapta el recorrido y mantiene los mismos datos. Ambas imágenes
+«Antes / Con Kacho», lado a lado también en móvil. Con las mismas 1,000 consultas,
+el ejemplo compara cobertura de 50% y 100%: 500/1,000 atendidas, 150/300 cotizaciones
+y 30/60 ventas estimadas. Los anillos y las fichas conservan la misma escala en
+ambos lados. La proyección es fija, con tasas de cotización de 30% y cierre de 20%.
+La versión móvil adapta el recorrido y mantiene los mismos datos. Ambas imágenes
 incluyen el personaje y la tipografía para cargarse de forma autónoma.
 No publica cifras de clientes ni resultados atribuidos.
 
