@@ -69,7 +69,10 @@ test('el visitante puede recorrer las capacidades sin solicitudes a proveedores'
   for (const feature of ['imagenes', 'voz', 'carrusel', 'llamadas', 'programados', 'seguimiento', 'tablero']) {
     await page.locator(`button[data-feature="${feature}"]`).click();
     assert.equal(await page.locator('#feature-panel').getAttribute('data-feature'), feature);
-    assert.ok((await page.locator('#feature-panel').innerText()).length > 100);
+    assert.equal(await page.locator('.phone-screen').getAttribute('data-mode'), feature);
+    assert.equal(await page.locator('#feature-panel button').first().isVisible(), true);
+    assert.equal(await page.locator('#device-note').isVisible(), true);
+    assert.equal(await page.locator('#conversation-actions').isVisible(), false);
   }
   assert.deepEqual(external, []);
   assert.deepEqual(errors, []);

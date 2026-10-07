@@ -18,6 +18,8 @@ Abrir http://127.0.0.1:8080/. Con `file://` no carga `giros.json`.
 
 La sección de series incluye ocho ejemplos interactivos: conversación, imágenes,
 notas de voz, carrusel, llamadas, mensajes programados, seguimiento y tablero.
+Se recorren dentro de un mockup de celular con interfaz de WhatsApp; las llamadas
+tienen su propia pantalla y el tablero se presenta como un reporte compartido.
 Son guiones y datos ilustrativos; no llaman a proveedores ni envían mensajes.
 La personalización muestra nombre, color y logo en el navegador. El logo no se
 sube ni se conserva al recargar. El simulador compara dos coberturas de atención

@@ -6,6 +6,7 @@ window.KachoProduct = (() => {
   const safe = value => String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
   const arrow = '<svg class="icon" aria-hidden="true"><use href="#arrow"/></svg>';
   const number = new Intl.NumberFormat('es-MX');
+  const messageMeta = (outgoing = false) => `<div class="message-meta"><time>9:41</time>${outgoing ? '<svg viewBox="0 0 20 12" aria-label="Leído"><path d="m1 6 4 4L14 1M10 8l2 2 7-9"/></svg>' : ''}</div>`;
   const FEATURES = {
     conversacion: ['Conversación por WhatsApp', 'Cada consulta avanza con una pregunta útil y un siguiente paso.'],
     imagenes: ['Una imagen también cuenta la historia', 'Una foto aporta contexto y ayuda a hacer mejores preguntas antes de cotizar.'],
@@ -57,7 +58,7 @@ window.KachoProduct = (() => {
     messages().slice(existing, messageCount).forEach(([role, text]) => {
       const bubble = document.createElement('div');
       bubble.className = `message ${role} continued`;
-      bubble.innerHTML = `<span>${role === 'buyer' ? 'Cliente' : safe('Kacho ' + detail.name)}</span><p>${safe(text)}</p>`;
+      bubble.innerHTML = `<span class="sr-only">${role === 'buyer' ? 'Cliente' : safe('Kacho ' + detail.name)}</span><p>${safe(text)}</p>${messageMeta(role === 'buyer')}`;
       container.append(bubble);
     });
     if (messageCount === 4 && !container.querySelector('.conversation-next')) {
@@ -104,32 +105,43 @@ window.KachoProduct = (() => {
     $('#demo-caption').textContent = FEATURES[feature][0];
     $('#feature-benefit').textContent = FEATURES[feature][1];
     $('#conversation-view').hidden = feature !== 'conversacion';
+    $('#conversation-scenarios').hidden = feature !== 'conversacion';
+    $('#conversation-actions').hidden = feature !== 'conversacion';
     $('#feature-panel').hidden = feature === 'conversacion';
     $('#feature-panel').dataset.feature = feature;
+    $('.phone-screen').dataset.mode = feature;
+    $('#feature-panel').scrollTop = 0;
+    const notes = {
+      conversacion: 'Conversación ilustrativa. Avanza un mensaje por clic; el bot aún no está conectado.',
+      imagenes: 'Imagen y conversación ilustrativas. Las medidas y condiciones se confirman con el cliente.',
+      voz: 'Nota de voz ilustrativa: puedes leer la transcripción. Esta demo no reproduce ni graba audio.',
+      carrusel: 'Catálogo ilustrativo. Tu empresa aporta las fotos, precios y disponibilidad reales.',
+      llamadas: 'Llamada ilustrativa con guion escrito. Esta demo no hace llamadas ni usa tu micrófono.',
+      programados: 'Simulación: no agenda ni envía mensajes. Los horarios y permisos se definen con tu empresa.',
+      seguimiento: 'Recorrido ilustrativo. El seguimiento se ajusta al estado de la conversación y a tus reglas.',
+      tablero: 'Vista de un reporte compartido desde tu tablero, con datos ficticios. No es una función nativa de WhatsApp.'
+    };
+    $('#device-note').textContent = notes[feature];
     if (feature === 'conversacion') renderConversation();
     else renderFeature();
   }
 
-  const note = text => `<p class="feature-note">${text}</p>`;
-  const bubble = text => `<div class="message agent"><span>Kacho ${safe(detail.name)}</span><p>${safe(text)}</p></div>`;
+  const bubble = (text, role = 'agent') => `<div class="message ${role}"><span class="sr-only">${role === 'buyer' ? 'Cliente' : 'Kacho ' + safe(detail.name)}</span><p>${safe(text)}</p>${messageMeta(role === 'buyer')}</div>`;
   function renderFeature() {
     const panel = $('#feature-panel');
     if (feature === 'imagenes') panel.innerHTML = `
-      <div class="feature-heading"><span>01 / EL CLIENTE ENVÍA UNA REFERENCIA</span><h3>Una foto abre la conversación.</h3></div>
-      <div class="sample-photo"><svg viewBox="0 0 560 245" role="img" aria-label="Ilustración de un espacio como imagen de referencia"><rect width="560" height="245" fill="#ded5c7"/><path d="M0 180 190 105H560V245H0" fill="#b1b7a1"/><path d="M0 0h190v105L0 180Z" fill="#eadfce"/><path d="M190 105 400 245M290 105 525 245M390 105 560 205M70 152H560M0 201h560" stroke="#ece8de" stroke-width="2"/><rect x="225" y="27" width="103" height="63" rx="2" fill="#5d716c"/><path d="M276 27V90" stroke="#ded5c7" stroke-width="5"/><rect x="382" y="39" width="73" height="100" fill="#927b60"/><path d="M470 190v-52" stroke="#727a59" stroke-width="5"/><ellipse cx="455" cy="147" rx="24" ry="12" fill="#839671"/><ellipse cx="486" cy="133" rx="23" ry="12" fill="#6d805a"/><path d="M445 188h48l-7 35h-34Z" fill="#b87b53"/></svg><span>Imagen ilustrativa · sin datos de clientes</span></div>
-      <p class="customer-caption">«Te comparto una referencia de lo que tengo en mente.»</p>
-      <button class="demo-action" data-action="image-answer" aria-expanded="false" aria-controls="image-answer">Ver respuesta de ejemplo ${arrow}</button><div id="image-answer" hidden>${bubble(`Gracias, la imagen nos da contexto. Para orientarte necesitamos confirmar: ${sector.asks.toLowerCase()}. ¿Me cuentas un poco más?`)}${note('Las dimensiones, compatibilidad y condiciones se confirman con el cliente; no se deducen como hechos de una foto.')}</div>`;
+      <div class="message buyer photo-message"><div class="sample-photo"><svg viewBox="0 0 560 400" role="img" aria-label="Ilustración de un espacio como imagen de referencia"><rect width="560" height="400" fill="#ded5c7"/><path d="M0 280 190 175H560V400H0" fill="#b1b7a1"/><path d="M0 0h190v175L0 280Z" fill="#eadfce"/><path d="M190 175 400 400M290 175 525 400M390 175 560 325M70 241H560M0 320h560" stroke="#ece8de" stroke-width="2"/><rect x="225" y="57" width="103" height="73" rx="2" fill="#5d716c"/><path d="M276 57v73" stroke="#ded5c7" stroke-width="5"/><rect x="382" y="69" width="73" height="106" fill="#927b60"/><path d="M470 270v-62" stroke="#727a59" stroke-width="5"/><ellipse cx="455" cy="217" rx="24" ry="12" fill="#839671"/><ellipse cx="486" cy="203" rx="23" ry="12" fill="#6d805a"/><path d="M445 258h48l-7 35h-34Z" fill="#b87b53"/></svg></div><p>Te comparto una referencia de lo que tengo en mente.</p>${messageMeta(true)}</div>
+      <button class="demo-action" data-action="image-answer" aria-expanded="false" aria-controls="image-answer">Ver respuesta de ejemplo ${arrow}</button><div id="image-answer" hidden>${bubble(`Gracias, la imagen nos da contexto. Para orientarte necesitamos confirmar: ${sector.asks.toLowerCase()}. ¿Me cuentas un poco más?`)}</div>`;
     if (feature === 'voz') panel.innerHTML = `
-      <div class="feature-heading"><span>02 / TU CLIENTE LO DICE A SU MANERA</span><h3>También entiende notas de voz.</h3></div>
-      <div class="voice-note"><span class="voice-mark" aria-hidden="true">≋</span><div class="waveform" aria-hidden="true">${Array.from({length:30},(_,i)=>`<i style="--height:${[24,50,72,42,90,65,35][i%7]}%"></i>`).join('')}</div><span>0:12</span></div>
-      ${note('Nota de voz representada visualmente. Este ejemplo no reproduce ni graba audio.')}
-      <button class="demo-action" data-action="voice-transcript" aria-expanded="false" aria-controls="voice-transcript">Ver transcripción ${arrow}</button><div id="voice-transcript" hidden><div class="transcript"><span>LO QUE EL CLIENTE DIJO</span><p>${safe(sector.answer)}</p></div>${bubble(sector.reply)}</div>`;
+      ${bubble('Te lo explico mejor por audio.', 'buyer')}
+      <div class="message buyer voice-message"><div class="voice-note"><span class="voice-mark" aria-hidden="true">▶</span><div class="waveform" aria-hidden="true">${Array.from({length:30},(_,i)=>`<i style="--height:${[24,50,72,42,90,65,35][i%7]}%"></i>`).join('')}</div><span class="voice-avatar" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="12" r="6"/><path d="M5 30c0-14 22-14 22 0"/></svg></span></div><div class="voice-duration">0:12 ${messageMeta(true)}</div></div>
+      <button class="demo-action" data-action="voice-transcript" aria-expanded="false" aria-controls="voice-transcript">Ver transcripción ${arrow}</button><div id="voice-transcript" hidden><div class="message buyer transcript"><span>Transcripción</span><p>${safe(sector.answer)}</p>${messageMeta(true)}</div>${bubble(sector.reply)}</div>`;
     if (feature === 'carrusel') renderCarousel();
     if (feature === 'llamadas') renderCall();
     if (feature === 'programados') {
       const date = new Date(); date.setDate(date.getDate()+1);
       const tomorrow = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
-      panel.innerHTML = `<div class="feature-heading"><span>05 / UNA FECHA, UN MOTIVO</span><h3>«Escríbeme mañana.»</h3></div><p class="feature-description">El cliente acuerda cuándo retomar. El mensaje conserva el motivo de la conversación.</p><form id="schedule-demo" class="schedule-demo"><label for="schedule-date">Fecha<input id="schedule-date" type="date" value="${tomorrow}" min="${tomorrow}" required></label><label for="schedule-time">Hora local<input id="schedule-time" type="time" value="10:00" required></label><button class="demo-action" type="submit">Preparar recordatorio ${arrow}</button></form><div id="schedule-result" class="schedule-result" role="status"></div>${note('Simulación: no programa ni envía mensajes. En operación se revisan consentimiento, horario y requisitos del canal.')}`;
+      panel.innerHTML = `${bubble('Ahorita estoy ocupado. ¿Me escribes mañana?', 'buyer')}${bubble('Claro. Lo retomamos en el horario que te acomode.')}<form id="schedule-demo" class="schedule-demo"><p>Prueba un horario en la demo</p><label for="schedule-date">Fecha<input id="schedule-date" type="date" value="${tomorrow}" min="${tomorrow}" required></label><label for="schedule-time">Hora local<input id="schedule-time" type="time" value="10:00" required></label><button class="demo-action" type="submit">Preparar recordatorio ${arrow}</button></form><div id="schedule-result" class="schedule-result" role="status"></div>`;
     }
     if (feature === 'seguimiento') renderFollowup();
     if (feature === 'tablero') renderDashboard();
@@ -137,7 +149,7 @@ window.KachoProduct = (() => {
 
   function renderCarousel() {
     const labels = OPTIONS[sector.id];
-    $('#feature-panel').innerHTML = `<div class="feature-heading"><span>03 / DEL CATÁLOGO A LA ELECCIÓN</span><h3>Una conversación. Varias opciones.</h3></div><div class="catalog-window"><article class="catalog-card"><div class="catalog-sample sample-${card}" aria-hidden="true"><span>${safe(sector.short)}</span><b>0${card+1}</b></div><div class="catalog-copy"><small>REFERENCIA DE EJEMPLO</small><h4>${safe(labels[card])}</h4><p>La ficha reúne la información que tu cliente necesita comparar.</p><button data-action="choose-card">Me interesa esta opción ${arrow}</button></div></article></div><div class="catalog-controls"><button data-action="prev-card" aria-label="Opción anterior">←</button><span>${card+1} de ${labels.length}</span><button data-action="next-card" aria-label="Opción siguiente">→</button></div><div id="catalog-selection" role="status"></div>${note('Opciones ilustrativas. Tu catálogo aporta fotos, especificaciones, precios y disponibilidad reales.')}`;
+    $('#feature-panel').innerHTML = `${bubble('Te comparto algunas opciones. ¿Cuál se parece más a lo que buscas?')}<div class="catalog-window"><article class="catalog-card"><div class="catalog-sample sample-${card}" aria-hidden="true"><span>${safe(sector.short)}</span><b>0${card+1}</b></div><div class="catalog-copy"><small>CATÁLOGO DE EJEMPLO</small><h4>${safe(labels[card])}</h4><p>Revisa esta opción y la adaptamos a lo que necesitas.</p>${messageMeta()}<button data-action="choose-card">Me interesa esta opción ${arrow}</button></div></article></div><div class="catalog-controls"><button data-action="prev-card" aria-label="Opción anterior">←</button><span>${card+1} de ${labels.length}</span><button data-action="next-card" aria-label="Opción siguiente">→</button></div><div id="catalog-selection" role="status"></div>`;
   }
 
   function renderCall() {
@@ -146,7 +158,8 @@ window.KachoProduct = (() => {
       ['Cliente',sector.answer], ['Kacho',sector.reply],
       ['Resumen para el equipo',`${sector.next}. Contexto: ${detail.brief}.`]
     ];
-    $('#feature-panel').innerHTML = `<div class="feature-heading"><span>04 / ATENCIÓN POR VOZ</span><h3>La llamada deja un siguiente paso.</h3></div><div class="call-display"><img src="assets/${sector.id}.webp" width="90" height="90" alt=""><div><strong>Kacho ${safe(detail.name)}</strong><span>${callStep ? 'Recorrido de una llamada de ejemplo' : 'Llamada de ejemplo'}</span></div><span class="call-symbol" aria-hidden="true">◖</span></div><div class="call-script" aria-live="polite">${script.slice(0,callStep).map(([who,text])=>`<p><span>${safe(who)}</span>${safe(text)}</p>`).join('')}</div><button class="demo-action" data-action="advance-call">${callStep===4?'Reiniciar llamada':callStep?'Siguiente parte':'Atender llamada de ejemplo'} ${arrow}</button>${note('Guion escrito: no inicia una llamada ni usa tu micrófono. La conexión de voz se define según el canal y el servicio contratado.')}`;
+    $('#feature-panel').innerHTML = `<div class="call-display"><span class="call-app">WhatsApp · Llamada de ejemplo</span><img src="assets/${sector.id}.webp" width="110" height="110" alt=""><strong>Kacho ${safe(detail.name)}</strong><span>${callStep === 4 ? 'Resumen preparado' : callStep ? 'Conversación de ejemplo' : 'Llamada entrante'}</span></div><div class="call-script" aria-live="polite">${script.slice(0,callStep).map(([who,text])=>`<p><span>${safe(who)}</span>${safe(text)}</p>`).join('')}</div><div class="call-decoration" aria-hidden="true"><span><svg class="icon" viewBox="0 0 24 24"><path d="M5 9h4l5-4v14l-5-4H5ZM17 8a6 6 0 0 1 0 8M20 5a10 10 0 0 1 0 14"/></svg></span><span><svg class="icon" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M6 10v2a6 6 0 0 0 12 0v-2M12 18v4"/></svg></span><span><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="6" width="12" height="12" rx="3"/><path d="m15 10 6-4v12l-6-4"/></svg></span></div><button class="demo-action" data-action="advance-call">${callStep===4?'Reiniciar llamada':callStep?'Siguiente parte':'Atender llamada de ejemplo'} ${arrow}</button>`;
+    $('.call-script').scrollTop = $('.call-script').scrollHeight;
   }
 
   function renderFollowup() {
@@ -156,7 +169,7 @@ window.KachoProduct = (() => {
       asesor: ['Tu equipo tiene la conversación','Un asesor está atendiendo al cliente. Kacho deja espacio y conserva el contexto.','El bot no se interpone cuando entra una persona.']
     };
     const data = states[followup];
-    $('#feature-panel').innerHTML = `<div class="feature-heading"><span>06 / CONTINUIDAD CON CRITERIO</span><h3>Seguir la venta también es saber parar.</h3></div><div class="followup-states" role="group" aria-label="Estado del seguimiento">${[['pendiente','Sin respuesta'],['respondio','Cliente respondió'],['asesor','Asesor activo']].map(([id,label])=>`<button data-followup="${id}" aria-pressed="${id===followup}">${label}</button>`).join('')}</div><div class="followup-timeline"><span>Consulta recibida</span><span>Contexto preparado</span><strong>${data[0]}</strong></div>${bubble(data[1])}<p class="feature-description">${data[2]}</p>${note('Recorrido ilustrativo. Los tiempos, límites, consentimiento y excepciones se acuerdan con tu negocio.')}`;
+    $('#feature-panel').innerHTML = `${bubble('Gracias por la información, lo voy a revisar.', 'buyer')}${bubble('Claro, aquí estoy si tienes alguna duda.')}<div class="followup-states" role="group" aria-label="Estado del seguimiento">${[['pendiente','Sin respuesta'],['respondio','Cliente respondió'],['asesor','Asesor activo']].map(([id,label])=>`<button data-followup="${id}" aria-pressed="${id===followup}">${label}</button>`).join('')}</div><div class="followup-timeline"><strong>${data[0]}</strong></div>${followup === 'pendiente' ? bubble(data[1]) : `<div class="chat-system">${data[1]}</div>`}<p class="feature-description">${data[2]}</p>`;
   }
 
   function renderDashboard() {
@@ -165,7 +178,7 @@ window.KachoProduct = (() => {
       cotizaciones: [['Consultas recibidas',120],['Cotizaciones',38],['Ventas confirmadas',8]],
       seguimiento: [['Cotizaciones',38],['En seguimiento',20],['Con asesor',10]]
     };
-    $('#feature-panel').innerHTML = `<div class="feature-heading"><span>07 / LO QUE PASA, A LA VISTA</span><h3>Un tablero para decidir.</h3></div><div class="dashboard-tabs" role="group" aria-label="Vista del tablero">${[['atencion','Atención'],['cotizaciones','Cotizaciones'],['seguimiento','Seguimiento']].map(([id,label])=>`<button data-dashboard="${id}" aria-pressed="${id===dashboard}">${label}</button>`).join('')}</div><div class="mini-dashboard"><div class="mini-dashboard-top"><strong>Operación comercial</strong><span>Datos de ejemplo</span></div>${views[dashboard].map(([label,value])=>`<div class="dashboard-row"><div><span>${label}</span><strong>${value}</strong></div><div class="dashboard-track"><i style="--bar:${value/120*100}%"></i></div></div>`).join('')}<div class="dashboard-footnote">Misma cohorte: 120 consultas recibidas.<br>Las etapas del embudo no se suman entre sí.</div></div>${note('Números ficticios para mostrar el tablero. En una operación real se concilian conversación, cotización y cierre; los envíos no son ventas.')}`;
+    $('#feature-panel').innerHTML = `${bubble('¿Cómo vamos con la atención y las cotizaciones?', 'buyer')}<div class="message agent shared-report"><p>Te comparto un resumen de tu tablero.</p><div class="dashboard-tabs" role="group" aria-label="Vista del tablero">${[['atencion','Atención'],['cotizaciones','Cotizaciones'],['seguimiento','Seguimiento']].map(([id,label])=>`<button data-dashboard="${id}" aria-pressed="${id===dashboard}">${label}</button>`).join('')}</div><div class="mini-dashboard"><div class="mini-dashboard-top"><strong>Operación comercial</strong><span>Datos de ejemplo</span></div>${views[dashboard].map(([label,value])=>`<div class="dashboard-row"><div><span>${label}</span><strong>${value}</strong></div><div class="dashboard-track"><i style="--bar:${value/120*100}%"></i></div></div>`).join('')}<div class="dashboard-footnote">Misma cohorte: 120 consultas recibidas.<br>Las etapas del embudo no se suman entre sí.</div></div>${messageMeta()}</div>`;
   }
 
   $('#advance-scene').addEventListener('click', () => { messageCount = messageCount===4 ? 1 : messageCount+1; renderConversation(); });
@@ -182,12 +195,16 @@ window.KachoProduct = (() => {
       const target = action === 'image-answer' ? $('#image-answer') : $('#voice-transcript');
       target.hidden = !target.hidden;
       button.setAttribute('aria-expanded', String(!target.hidden));
+      if (!target.hidden) target.scrollIntoView({block:'nearest', behavior:'instant'});
     }
     if (action === 'next-card' || action === 'prev-card') {
       card = (card + (action==='next-card'?1:-1) + 3) % 3;
       renderCarousel(); $(`[data-action="${action}"]`).focus({preventScroll:true});
     }
-    if (action === 'choose-card') $('#catalog-selection').innerHTML = bubble(`Elegiste ${OPTIONS[sector.id][card].toLowerCase()}. Para avanzar, confirmemos ${sector.asks.toLowerCase()}.`);
+    if (action === 'choose-card') {
+      $('#catalog-selection').innerHTML = bubble(`Elegiste ${OPTIONS[sector.id][card].toLowerCase()}. Para avanzar, confirmemos ${sector.asks.toLowerCase()}.`);
+      $('#catalog-selection').scrollIntoView({block:'nearest', behavior:'instant'});
+    }
     if (action === 'advance-call') { callStep = (callStep+1)%5; renderCall(); $('[data-action="advance-call"]').focus({preventScroll:true}); }
     if (button.dataset.followup) { followup = button.dataset.followup; renderFollowup(); $(`[data-followup="${followup}"]`).focus({preventScroll:true}); }
     if (button.dataset.dashboard) { dashboard = button.dataset.dashboard; renderDashboard(); $(`[data-dashboard="${dashboard}"]`).focus({preventScroll:true}); }
@@ -199,6 +216,7 @@ window.KachoProduct = (() => {
     if (!Number.isFinite(date.getTime())) return;
     const formatted = date.toLocaleString('es-MX',{dateStyle:'medium',timeStyle:'short'});
     $('#schedule-result').innerHTML = `<span>PREPARADO EN ESTE EJEMPLO</span><strong>${safe(formatted)} · hora de tu dispositivo</strong>${bubble(`Hola, como acordamos, retomamos ${detail.brief}. ¿Avanzamos con ${sector.next.toLowerCase()}?`)}`;
+    $('#schedule-result').scrollIntoView({block:'nearest', behavior:'instant'});
   });
 
   function updateBrand() {
