@@ -12,9 +12,11 @@
   <link rel="preload" href="assets/materiales.webp" as="image">
   <link rel="stylesheet" href="kacho.css">
   <link rel="stylesheet" href="product.css?v=leads-20261007">
+  <link rel="stylesheet" href="chat-widget.css?v=20261007">
   <script src="product-config.js" defer></script>
   <script src="product.js?v=valor-fijo-20261007" defer></script>
   <script src="kacho.js" defer></script>
+  <script src="chat-widget.js?v=20261007" defer></script>
 </head>
 <body>
   <!-- THESIS: Una familia de vendedores que demuestra su especialidad con equipo y preguntas propias de cada giro.
@@ -123,6 +125,52 @@
     <section class="request-section" id="tu-kacho"><div class="section-shell request-grid"><div class="request-copy"><h2>Vamos a ponerle<br><em>tu cachucha.</em></h2><p>Cuéntanos qué vendes y qué conversación quieres resolver. Con ese contexto, la demo puede parecerse a tu negocio.</p><div class="request-character"><img id="request-character" src="assets/materiales.webp" width="1280" height="1280" loading="lazy" alt="Kacho Materiales"><span id="request-character-name">Tu Kacho de Materiales</span></div></div><div class="request-surface"><form id="request-form"><h3>Prepara el contexto de tu demo.</h3><div class="form-field"><label for="company">Nombre de tu negocio</label><input id="company" name="company" autocomplete="organization" maxlength="100" placeholder="¿Cómo se llama tu empresa?" required></div><div class="form-field"><label for="request-sector">Giro de negocio</label><select id="request-sector" name="sector" disabled></select></div><fieldset class="goal-field"><legend>¿Qué quieres resolver primero?</legend><div><label><input type="radio" name="goal" value="Orientar a quien pregunta" checked><span>Orientar a quien pregunta</span></label><label><input type="radio" name="goal" value="Preparar cotizaciones"><span>Preparar cotizaciones</span></label><label><input type="radio" name="goal" value="Llevar oportunidades al equipo"><span>Llevar oportunidades al equipo</span></label></div></fieldset><div class="form-field"><label for="context">Un poco de contexto <span>(opcional)</span></label><textarea id="context" name="context" maxlength="700" rows="3" placeholder="Qué vendes y qué suelen preguntar tus clientes."></textarea></div><button type="submit" class="button" disabled>Preparar mi solicitud <svg class="icon"><use href="#arrow-up"/></svg></button><p class="form-note" id="form-note">Puedes revisar, copiar o descargar tu solicitud. Prepararla no envía tus datos.</p></form><div id="request-result" class="request-result" hidden><div class="result-check"><svg class="icon"><use href="#check"/></svg></div><h3>Tu solicitud está preparada.</h3><p id="result-state">Todavía no se ha enviado. Revísala y guarda una copia.</p><pre id="request-summary" tabindex="0" aria-label="Resumen de tu solicitud"></pre><div class="result-actions"><button class="button" id="copy-request"><svg class="icon"><use href="#copy"/></svg>Copiar solicitud</button><button class="button button-outline" id="download-request"><svg class="icon"><use href="#download"/></svg>Descargar</button><a class="button" id="send-request" hidden rel="noopener" target="_blank">Abrir WhatsApp <svg class="icon"><use href="#arrow-up"/></svg></a></div><p class="copy-status" id="copy-status" role="status"></p><button id="edit-request" class="text-link">Editar mi solicitud <svg class="icon"><use href="#arrow"/></svg></button></div></div></div></section>
   </main>
   <footer class="site-footer section-shell"><div class="footer-top"><p>Se pone la cachucha.<br>Se sabe tu negocio.</p><a href="#inicio" class="text-link">Volver al inicio <svg class="icon"><use href="#arrow-up"/></svg></a></div><p class="footer-wordmark" aria-label="Kacho">kacho<span>.</span></p><div class="footer-bottom"><span>Especialistas de venta para WhatsApp.</span><span>Conversaciones ilustrativas.</span><a href="#a-tu-medida">Conoce la familia <svg class="icon" aria-hidden="true"><use href="#arrow-up"/></svg></a></div></footer>
+  <!-- Chat de demostración: misma identidad Kacho, preguntas locales, sin motor ni envíos. -->
+  <div class="kc-widget" id="kacho-chat-widget" hidden>
+    <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+      <symbol id="kc-face" viewBox="0 0 64 64"><rect x="5" y="7" width="54" height="50" rx="19" fill="#e9702f"/><rect x="13" y="16" width="38" height="28" rx="12" fill="none" stroke="#ac3d12" stroke-width="1.5"/><g class="kc-eyes" fill="#2b231f"><rect x="21" y="23" width="7" height="15" rx="3.5"/><rect x="37" y="24" width="7" height="14" rx="3.5"/></g></symbol>
+      <symbol id="kc-send" viewBox="0 0 24 24"><path d="M12 19V5m-6 6 6-6 6 6"/></symbol>
+      <symbol id="kc-restart" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1.6 7M4 4v6h6"/></symbol>
+    </defs></svg>
+
+    <button class="kc-launcher" id="kacho-chat-launcher" type="button" aria-label="Abrir chat con Kacho" aria-controls="kacho-chat" aria-expanded="false">
+      <span class="kc-invitation" aria-hidden="true"><span>¿Una duda?</span><strong>Pregúntale a Kacho <svg class="icon"><use href="#arrow-up"/></svg></strong></span>
+      <span class="kc-launcher-face"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#kc-face"/></svg><span class="kc-launcher-spark" aria-hidden="true"><svg class="icon"><use href="#chat"/></svg></span></span>
+    </button>
+
+    <section class="kc-panel" id="kacho-chat" role="dialog" aria-labelledby="kacho-chat-title" aria-describedby="kacho-chat-note" tabindex="-1" hidden>
+      <header class="kc-header">
+        <div class="kc-brand"><h2 id="kacho-chat-title">kacho<span>.</span></h2><span>Tu guía por aquí.</span></div>
+        <span class="kc-demo-badge">Demo</span>
+        <button class="kc-icon-button" id="kacho-chat-reset" type="button" aria-label="Empezar una conversación nueva" title="Empezar de nuevo" disabled><svg class="icon" aria-hidden="true"><use href="#kc-restart"/></svg></button>
+        <button class="kc-icon-button" id="kacho-chat-close" type="button" aria-label="Cerrar chat" title="Cerrar chat"><svg class="icon" aria-hidden="true"><use href="#close"/></svg></button>
+      </header>
+
+      <div class="kc-content" id="kacho-chat-content">
+        <div class="kc-welcome" id="kacho-chat-welcome">
+          <div class="kc-hello"><div><h3>Mucho gusto.<br>Soy <span>Kacho.</span></h3><p>Una buena conversación<br>empieza con una duda.</p></div><div class="kc-portrait" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#kc-face"/></svg><span class="kc-portrait-shadow"></span></div></div>
+          <p class="kc-start">¿Por dónde empezamos?</p>
+          <div class="kc-questions" aria-label="Preguntas para empezar">
+            <button type="button" data-kacho-question="funciones"><span>¿Qué puede hacer Kacho?<small>Conoce sus posibilidades</small></span><svg class="icon" aria-hidden="true"><use href="#arrow-up"/></svg></button>
+            <button type="button" data-kacho-question="negocio"><span>¿Y para mi negocio?<small>Una cachucha a tu medida</small></span><svg class="icon" aria-hidden="true"><use href="#arrow-up"/></svg></button>
+            <button type="button" data-kacho-question="precio"><span>¿Cuánto cuesta?<small>Así se prepara tu propuesta</small></span><svg class="icon" aria-hidden="true"><use href="#arrow-up"/></svg></button>
+          </div>
+        </div>
+        <p class="kc-thread-label" id="kacho-chat-thread-label" hidden>Tu conversación con Kacho</p>
+        <div class="kc-messages" id="kacho-chat-messages" role="log" aria-label="Conversación con Kacho" aria-live="polite" aria-relevant="additions text"></div>
+        <div class="kc-followups" id="kacho-chat-followups" aria-label="Seguir la conversación" hidden></div>
+      </div>
+
+      <footer class="kc-footer">
+        <form class="kc-composer" id="kacho-chat-form">
+          <label class="sr-only" for="kacho-chat-input">Tu pregunta para Kacho</label>
+          <textarea id="kacho-chat-input" placeholder="Escribe tu pregunta…" rows="1" maxlength="700" enterkeyhint="send" autocomplete="off" aria-describedby="kacho-chat-note"></textarea>
+          <button class="kc-send" id="kacho-chat-send" type="submit" aria-label="Enviar pregunta" disabled><svg class="icon" aria-hidden="true"><use href="#kc-send"/></svg></button>
+        </form>
+        <p class="kc-note" id="kacho-chat-note">Demo con respuestas de ejemplo. Sin IA conectada.</p>
+      </footer>
+    </section>
+  </div>
   <noscript><p class="noscript">Puedes recorrer la propuesta completa. Para cambiar de personaje y preparar tu solicitud, activa JavaScript en tu navegador.</p></noscript>
 </body>
 </html>

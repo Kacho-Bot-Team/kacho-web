@@ -29,6 +29,83 @@ async function pageAt(width = 1440) {
   return page;
 }
 
+test('Kacho flotante responde en demo, conserva la charla y permite empezar de nuevo', async () => {
+  const page = await pageAt();
+  const external = [];
+  page.on('request', request => { if (!request.url().startsWith(base)) external.push(request.url()); });
+  assert.equal(await page.locator('#kacho-chat-launcher').count(), 1, 'debe existir el acceso flotante');
+  assert.equal(await page.locator('#kacho-chat').isVisible(), false);
+  await page.locator('#kacho-chat-launcher').click();
+  assert.equal(await page.locator('#kacho-chat').isVisible(), true);
+  assert.match(await page.locator('#kacho-chat-note').textContent(), /respuestas de ejemplo/i);
+  await page.locator('#kacho-chat [data-kacho-question="precio"]').click();
+  await page.waitForFunction(() => document.querySelectorAll('#kacho-chat-messages .kc-answer').length === 1);
+  assert.match(await page.locator('.kc-answer').textContent(), /a medida/i);
+  assert.equal(await page.locator('#kacho-chat-messages .kc-message').count(), 2);
+  await page.locator('#kacho-chat-close').click();
+  assert.equal(await page.locator('#kacho-chat-launcher').evaluate(el => el === document.activeElement), true);
+  await page.locator('#kacho-chat-launcher').click();
+  assert.equal(await page.locator('#kacho-chat-messages .kc-message').count(), 2);
+  await page.locator('#kacho-chat-reset').click();
+  assert.equal(await page.locator('#kacho-chat-messages .kc-message').count(), 0);
+  assert.equal(await page.locator('#kacho-chat-welcome').isVisible(), true);
+  assert.deepEqual(external, [], 'el prototipo no debe enviar mensajes a proveedores');
+  await page.close();
+});
+
+test('el chat maneja teclado, texto desconocido y HTML como texto seguro', async () => {
+  const page = await pageAt();
+  await page.locator('#kacho-chat-launcher').click();
+  const input = page.locator('#kacho-chat-input');
+  assert.equal(await page.locator('#kacho-chat-send').isDisabled(), true);
+  const question = '<img src=x onerror="window.kachoInjection=true"> ¿Hay pingüinos en Marte?';
+  await input.fill(question);
+  await input.press('Enter');
+  await page.waitForFunction(() => document.querySelectorAll('#kacho-chat-messages .kc-answer').length === 1);
+  assert.equal(await page.locator('.kc-message-user p').textContent(), question);
+  assert.equal(await page.locator('.kc-message-user img').count(), 0);
+  assert.equal(await page.evaluate(() => window.kachoInjection), undefined);
+  assert.match(await page.locator('.kc-answer').textContent(), /todavía no.*demo/i);
+  await input.press('Escape');
+  assert.equal(await page.locator('#kacho-chat').isVisible(), false);
+  assert.equal(await page.locator('#kacho-chat-launcher').getAttribute('aria-expanded'), 'false');
+  await page.locator('#kacho-chat-launcher').click();
+  await input.fill('Quiero ver una demo');
+  await input.press('Enter');
+  await page.waitForFunction(() => document.querySelectorAll('#kacho-chat-messages .kc-answer').length === 2);
+  await page.locator('#kacho-chat-messages a[href="#especialistas"]').click();
+  assert.equal(await page.locator('#kacho-chat').isVisible(), false);
+  assert.equal(new URL(page.url()).hash, '#especialistas');
+  await page.close();
+});
+
+test('el chat cabe en móvil y escritorio y no pierde una respuesta al minimizarse', async () => {
+  for (const width of [320, 390, 768, 1440]) {
+    const page = await pageAt(width);
+    await page.setViewportSize({ width, height:740 });
+    await page.locator('#kacho-chat-launcher').click();
+    const layout = await page.locator('#kacho-chat').evaluate(el => {
+      const r = el.getBoundingClientRect();
+      const send = document.querySelector('#kacho-chat-send').getBoundingClientRect();
+      return { left:r.left, right:r.right, top:r.top, bottom:r.bottom,
+        viewport:innerWidth, height:innerHeight, overflow:document.documentElement.scrollWidth > innerWidth,
+        target:Math.min(send.width, send.height) };
+    });
+    assert.ok(layout.left >= 0 && layout.right <= layout.viewport, JSON.stringify(layout));
+    assert.ok(layout.top >= 0 && layout.bottom <= layout.height, JSON.stringify(layout));
+    assert.equal(layout.overflow, false);
+    assert.ok(layout.target >= 44);
+    await page.locator('#kacho-chat-input').fill('x'.repeat(500));
+    await page.locator('#kacho-chat-send').click();
+    await page.locator('#kacho-chat-close').click();
+    await page.waitForFunction(() => document.querySelectorAll('#kacho-chat-messages .kc-answer').length === 1);
+    await page.locator('#kacho-chat-launcher').click();
+    assert.equal(await page.locator('#kacho-chat-messages .kc-message').count(), 2);
+    assert.equal(await page.locator('#kacho-chat-messages').evaluate(el => el.scrollWidth > el.clientWidth), false);
+    await page.close();
+  }
+});
+
 test('cada clic agrega un mensaje y conserva el contexto de la conversación', async () => {
   const page = await pageAt();
   const first = await page.locator('#messages .message').first().textContent();

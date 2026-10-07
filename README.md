@@ -38,6 +38,14 @@ La versión móvil adapta el recorrido y mantiene los mismos datos. Ambas imáge
 incluyen el personaje y la tipografía para cargarse de forma autónoma.
 No publica cifras de clientes ni resultados atribuidos.
 
+El icono flotante abre un chat genérico de Kacho con preguntas sugeridas, texto libre
+y respuestas locales de ejemplo. Conserva la conversación mientras la página siga
+abierta; permite minimizarla o reiniciarla y respeta reducir movimiento. No usa IA,
+no envía mensajes a un proveedor ni guarda la conversación al recargar. Su interfaz
+vive en `public/chat-widget.css` y `public/chat-widget.js`; `getDemoReply` concentra
+las respuestas que se sustituirán al conectar el motor. Los enlaces llevan a las
+secciones reales de la web; no simulan contacto con una persona.
+
 `public/product-config.js` concentra únicamente configuración apta para publicación:
 
 - `demoNumbers`: número autorizado de cada especialista, con lada, solo dígitos.
@@ -62,7 +70,7 @@ pnpm test
 `package.json` y `pnpm-lock.yaml` fijan la dependencia de pruebas. Las pruebas
 levantan y cierran su propio servidor local; no requieren modificar el puerto de una preview.
 Cubren los diez giros, avance y reinicio, acciones de las ocho demos, personalización,
-solicitud y descarga, enlaces por especialista y tamaños de 320 a 1440 px.
+solicitud y descarga, enlaces por especialista, chat flotante y tamaños de 320 a 1440 px.
 Los números de prueba solo se inyectan en el navegador del test y nunca se abren.
 Esta suite no verifica bots reales, Safari ni dispositivos físicos.
 
