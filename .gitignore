@@ -10,3 +10,6 @@ node_modules/
 # Entregables pesados: van a GitHub Releases
 *.zip
 *.pdf
+
+# Bitácora local; las notas del equipo pertenecen al repo privado
+/planes.md
