@@ -46,6 +46,15 @@ vive en `public/chat-widget.css` y `public/chat-widget.js`; `getDemoReply` conce
 las respuestas que se sustituirán al conectar el motor. Los enlaces llevan a las
 secciones reales de la web; no simulan contacto con una persona.
 
+La sección `#cotizacion-y-seguimiento` anima una consulta de 80 m²: reúne los datos,
+representa una cotización y su documento, los lleva a una oportunidad en CRM y
+muestra la tarea de seguimiento. `quote-flow.css` y `quote-flow.js` contienen la
+escena y sus cuatro pasos. Se reproduce una sola vez al entrar en pantalla, permite
+pausa/repetición y selección manual, y se detiene al salir de pantalla o cambiar de
+pestaña. Con movimiento reducido o pausa global, el recorrido es manual.
+El documento, el CRM y el mensaje son ilustrativos: no genera un PDF real, registra
+clientes ni agenda/envía seguimientos. Los importes permanecen por confirmar.
+
 `public/product-config.js` concentra únicamente configuración apta para publicación:
 
 - `demoNumbers`: número autorizado de cada especialista, con lada, solo dígitos.

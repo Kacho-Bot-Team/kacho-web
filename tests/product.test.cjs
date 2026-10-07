@@ -106,6 +106,59 @@ test('el chat cabe en móvil y escritorio y no pierde una respuesta al minimizar
   }
 });
 
+test('la secuencia de cotización muestra documento, CRM y siguiente contacto sin conexiones', async () => {
+  const page = await pageAt(390);
+  const flow = page.locator('#cotizacion-y-seguimiento');
+  assert.equal(await flow.count(), 1, 'debe existir la secuencia de cotización y CRM');
+  await flow.scrollIntoViewIfNeeded();
+  const external = [];
+  page.on('request', request => { if (!request.url().startsWith(base)) external.push(request.url()); });
+  for (let step = 0; step < 4; step++) {
+    await page.locator(`[data-quote-step="${step}"]`).click();
+    assert.equal(await flow.getAttribute('data-step'), String(step));
+    assert.equal(await page.locator(`[data-quote-step="${step}"]`).getAttribute('aria-pressed'), 'true');
+    assert.equal(await flow.evaluate(el => el.scrollWidth > el.clientWidth), false);
+    const clipped = await page.locator('#quote-stage').evaluate(stage => {
+      const bounds = stage.getBoundingClientRect();
+      return [...stage.querySelectorAll('.qf-sheet,.qf-file-label,.qf-crm,.qf-followup')]
+        .filter(el => getComputedStyle(el).visibility !== 'hidden')
+        .some(el => el.getBoundingClientRect().bottom > bounds.bottom + 1);
+    });
+    assert.equal(clipped, false, 'el documento y sus adjuntos deben caber completos');
+  }
+  assert.match(await page.locator('#quote-crm').textContent(), /cotizacion-cafeteria/);
+  assert.match(await page.locator('#quote-followup').textContent(), /revisar la cotización/);
+  assert.match(await page.locator('#quote-disclaimer').textContent(), /ilustrativa/);
+  assert.equal(await flow.getAttribute('data-playing'), 'false', 'reducir movimiento permite recorrido manual');
+  await page.locator('#quote-play').click();
+  assert.equal(await flow.getAttribute('data-step'), '0');
+  assert.deepEqual(external, []);
+  await page.close();
+});
+
+test('la animación de cotización se pausa y se detiene fuera de pantalla', async () => {
+  const page = await browser.newPage({ viewport:{width:1440,height:1000}, reducedMotion:'no-preference' });
+  await page.clock.install();
+  await page.goto(base);
+  await page.waitForFunction(() => window.__kacho?.ready);
+  const flow = page.locator('#cotizacion-y-seguimiento');
+  await page.locator('#quote-stage').scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => document.querySelector('#cotizacion-y-seguimiento')?.dataset.playing === 'true');
+  await page.clock.runFor(5300);
+  assert.equal(await flow.getAttribute('data-step'), '1');
+  await page.locator('#quote-play').click();
+  await page.clock.runFor(6000);
+  assert.equal(await flow.getAttribute('data-step'), '1', 'pausar conserva el paso');
+  await page.locator('#quote-play').click();
+  await page.clock.runFor(5300);
+  assert.equal(await flow.getAttribute('data-step'), '2');
+  await page.locator('#inicio').scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => document.querySelector('#cotizacion-y-seguimiento').dataset.playing === 'false');
+  await page.clock.runFor(6000);
+  assert.equal(await flow.getAttribute('data-step'), '2', 'no avanza cuando no se ve');
+  await page.close();
+});
+
 test('cada clic agrega un mensaje y conserva el contexto de la conversación', async () => {
   const page = await pageAt();
   const first = await page.locator('#messages .message').first().textContent();
