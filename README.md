@@ -24,10 +24,16 @@ Son guiones y datos ilustrativos; no llaman a proveedores ni envían mensajes.
 La personalización muestra nombre, color y logo en el navegador. El logo no se
 sube ni se conserva al recargar. La sección de valor muestra un proceso real de
 venta de pasto sintético de forma anónima y una sola escena SVG estática:
-«Antes / Con Kacho», lado a lado también en móvil. Con las mismas 1,000 consultas,
-el ejemplo compara cobertura de 50% y 100%: 500/1,000 atendidas, 150/300 cotizaciones
-y 30/60 ventas estimadas. Los anillos y las fichas conservan la misma escala en
-ambos lados. La proyección es fija, con tasas de cotización de 30% y cierre de 20%.
+«Antes / Con Kacho», lado a lado también en móvil, con «Abre la llave de los leads».
+El escenario inicial tiene 1,000 leads, 50% de atención, 27% de cotización y 18%
+de cierre: 500 atendidos, 135 cotizaciones y 24.3 ventas estimadas (se muestra ≈24).
+Con Kacho y captación ampliada: 5,000 leads, 100% de atención, 30% de cotización
+y 20% de cierre: 5,000 atendidos, 1,500 cotizaciones y 300 ventas estimadas.
+Las tasas iniciales son 10% menores en términos relativos (30 × 0.9 y 20 × 0.9).
+Los incrementos son +4,500 atendidos, +1,365 cotizaciones y ≈+276 ventas estimadas.
+Cada ficha equivale a cinco ventas, con fracción proporcional en el escenario
+inicial. La comparación combina flujo, cobertura y tasas; la captación se trabaja
+por separado. Es una proyección fija, no una mejora medida atribuible al bot.
 La versión móvil adapta el recorrido y mantiene los mismos datos. Ambas imágenes
 incluyen el personaje y la tipografía para cargarse de forma autónoma.
 No publica cifras de clientes ni resultados atribuidos.
