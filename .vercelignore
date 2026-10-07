@@ -1,0 +1,4 @@
+# Al publicar solo se sube el sitio y su configuración
+/*
+!/public
+!/vercel.json

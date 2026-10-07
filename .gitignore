@@ -1,0 +1,12 @@
+# Credenciales y enlaces locales: nunca al repo
+.env*
+.vercel/
+
+# Sistema y herramientas
+.DS_Store
+node_modules/
+*.log
+
+# Entregables pesados: van a GitHub Releases
+*.zip
+*.pdf
