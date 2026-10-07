@@ -69,7 +69,8 @@ window.KachoProduct = (() => {
     }
     $('#advance-scene').innerHTML = `${messageCount === 4 ? 'Reiniciar ejemplo' : messageCount % 2 ? 'Ver respuesta' : 'Ver mensaje del cliente'}${arrow}`;
     $('#scene-state').textContent = `${messageCount} de 4`;
-    container.scrollTop = messageCount === 1 ? 0 : container.scrollHeight;
+    const viewport = $('#conversation-view');
+    viewport.scrollTop = messageCount === 1 ? 0 : viewport.scrollHeight;
   }
 
   function selectScene(next) {
