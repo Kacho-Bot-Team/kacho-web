@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/estado-git.sh\"",
+            "timeout": 20,
+            "statusMessage": "Revisando si estás al día con GitHub…"
+          }
+        ]
+      }
+    ]
+  }
+}
