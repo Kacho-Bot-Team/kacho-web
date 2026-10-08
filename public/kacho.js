@@ -1,7 +1,7 @@
 'use strict';
 
 // Canal sin configurar hasta recibir un destino comercial real de Pablo.
-const CONTACT = { whatsapp: null, email: null };
+const CONTACT = window.KACHO_CONFIG.contact;
 const DETAILS = {
   materiales:{name:'Materiales',question:'¿Dónde lo vas a instalar?',caption:'Una buena cotización empieza con una buena pregunta.',alt:'naranja, con casco, chaleco café y muestras de material',price:'¿Qué material, cuántos metros y en qué zona sería la entrega? La cotización debe confirmar piezas y existencia.',brief:'una opción de piso para una cafetería, con 80 m² de tránsito comercial'},
   construccion:{name:'Obra',question:'¿Qué quieres construir?',caption:'Entiende el proyecto antes de preparar una visita.',alt:'naranja, con casco marfil, overol azul petróleo y un plano',price:'¿Qué quieres construir, cuántos metros y dónde? Un proyecto requiere revisar condiciones antes de estimar la obra.',brief:'una ampliación de terraza de 30 m² en Guadalajara'},
@@ -21,7 +21,7 @@ const escapeHTML = value => String(value).replaceAll('&','&amp;').replaceAll('<'
 const icon = name => `<svg class="icon" aria-hidden="true"><use href="#${name}"/></svg>`;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 let paused = reduced.matches;
-let sectors = [], current, scene = 'orientar', step = 0, switchId = 0;
+let sectors = [], current, switchId = 0;
 let preparedText = '';
 let requestedSector = 'materiales', wheelDirection = 1, swipeStart = null, suppressWheelClickUntil = 0;
 const imageCache = new Map();
@@ -56,7 +56,6 @@ function commitSector(s,animate) {
   const previous=current;
   current = s;
   const d = DETAILS[s.id], name = `Kacho ${d.name}`;
-  scene = 'orientar'; step = 0;
   $('#hero-sector').value = s.id;
   $('#request-sector').value = s.id;
   $('#hero-sector').disabled=false;
@@ -91,7 +90,7 @@ function commitSector(s,animate) {
   $('#request-character-name').textContent = `Tu Kacho de ${d.name}`;
   updateCasting(s,animate&&previous?.id!==s.id);
   document.body.dataset.sector = s.id;
-  renderConversation();
+  KachoProduct.selectSector(s, d);
   const url = new URL(location.href);
   url.searchParams.set('giro',s.id);
   history.replaceState(null,'',url);
@@ -181,32 +180,6 @@ function closeCasting(returnFocus=false) {
   if(returnFocus)$('#casting-toggle').focus({preventScroll:true});
 }
 
-function getMessages() {
-  const s=current, d=DETAILS[s.id];
-  if(scene==='precio') return [
-    ['buyer','¿Me puedes decir cuánto cuesta?'],
-    ['agent',d.price],
-    ['buyer','Perfecto. ¿Qué necesitan para preparar mi propuesta?'],
-    ['agent',`Podemos empezar por ${s.asks.toLowerCase().split(' · ').join(', ')}. Con esa información, el equipo confirma el alcance y las condiciones.`]
-  ];
-  if(scene==='asesor') return [
-    ['buyer','Prefiero revisar esto con una persona.'],
-    ['agent','Claro. Antes de pasar al equipo, confirmemos el contexto para que no tengas que empezar de nuevo.'],
-    ['buyer',s.answer],
-    ['agent',`La solicitud queda enfocada en ${d.brief}. El siguiente paso con el equipo sería: ${s.next.toLowerCase()}.`]
-  ];
-  return [['buyer',s.buyer],['agent',s.bot],['buyer',s.answer],['agent',s.reply]];
-}
-
-function renderConversation() {
-  if(!current) return;
-  $$('[data-scene]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.scene===scene)));
-  const messages = getMessages().slice(0,step?4:2);
-  $('#messages').innerHTML = messages.map(([role,text],i) => `<div class="message ${role}${i>1?' continued':''}"><span>${role==='buyer'?'Cliente':`Kacho ${DETAILS[current.id].name}`}</span><p>${escapeHTML(text)}</p></div>`).join('') + (step?`<div class="conversation-next"><span>Siguiente paso del ejemplo</span><strong>${escapeHTML(current.next)}</strong>${icon('arrow-up')}</div>`:'');
-  $('#advance-scene').innerHTML = `${step?'Reiniciar ejemplo':'Ver siguiente paso'}${icon('arrow')}`;
-  $('#scene-state').textContent = step?'2 de 2':'1 de 2';
-}
-
 function applyMotion() {
   document.body.dataset.motion = paused?'off':'on';
   document.documentElement.style.scrollBehavior=paused?'auto':'smooth';
@@ -244,7 +217,7 @@ $('#request-form').addEventListener('submit',event => {
   const selected=sectors.find(s => s.id===$('#request-sector').value) || current;
   const goal=$('input[name="goal"]:checked').value;
   const context=$('#context').value.trim();
-  preparedText=[`Solicitud de demo · KACHO`,``,`Negocio: ${company}`,`Giro: ${selected.name}`,`Especialista: Kacho ${DETAILS[selected.id].name}`,`Objetivo inicial: ${goal}`,context?`Contexto: ${context}`:null,``,`Me gustaría revisar una demostración para mi negocio y conocer una propuesta de alcance e inversión.`].filter(line => line!==null).join('\n');
+  preparedText=[`Solicitud de demo · KACHO`,``,`Negocio: ${company}`,`Giro: ${selected.name}`,`Especialista: Kacho ${DETAILS[selected.id].name}`,`Objetivo inicial: ${goal}`,...KachoProduct.requestDetails(),context?`Contexto: ${context}`:null,``,`Me gustaría revisar una demostración para mi negocio y conocer una propuesta de alcance e inversión.`].filter(line => line!==null).join('\n');
   $('#request-summary').textContent=preparedText;
   $('#copy-status').textContent='';
   $('#request-form').hidden=true;
@@ -272,6 +245,7 @@ $('#download-request').addEventListener('click',()=>{
   link.href=url;link.download='solicitud-demo-kacho.txt';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 });
 $('#edit-request').addEventListener('click',()=>editRequest());
+document.addEventListener('kacho:request-changed',()=>{if(!$('#request-result').hidden)editRequest(false);});
 $('#casting-prev').addEventListener('click',()=>moveCasting(-1));
 $('#casting-next').addEventListener('click',()=>moveCasting(1));
 $('#casting-toggle').addEventListener('click',()=>{
@@ -302,8 +276,6 @@ $('#casting-viewport').addEventListener('pointerup',event=>{
 });
 $('#hero-sector').addEventListener('change',event=>selectSector(event.target.value));
 $('#request-sector').addEventListener('change',event=>selectSector(event.target.value));
-$('#advance-scene').addEventListener('click',()=>{step=step?0:1;renderConversation();});
-$$('[data-scene]').forEach(button=>button.addEventListener('click',()=>{scene=button.dataset.scene;step=0;renderConversation();}));
 $('#motion-toggle').addEventListener('click',()=>{paused=!paused;applyMotion();});
 reduced.addEventListener('change',event=>{paused=event.matches;applyMotion();});
 $('#menu-toggle').addEventListener('click',()=>{
@@ -316,7 +288,7 @@ document.addEventListener('pointerdown',event=>{
 });
 matchMedia('(max-width:720px)').addEventListener('change',()=>closeMenu());
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&$('.site-header').classList.contains('menu-open'))closeMenu(true);});
-$('[data-show-handoff]').addEventListener('click',()=>{scene='asesor';step=0;renderConversation();});
+$('[data-show-handoff]').addEventListener('click',()=>KachoProduct.selectScene('asesor'));
 $$('svg.icon').forEach(svg=>{svg.setAttribute('aria-hidden','true');svg.setAttribute('focusable','false');});
 applyMotion();configureContact();
 

@@ -1,0 +1,11 @@
+{
+  "name": "kacho-web",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/product.test.cjs",
+    "check": "node --check public/kacho.js && node --check public/product.js && node --check public/product-config.js && node --check public/chat-widget.js && node --check public/quote-flow.js"
+  },
+  "devDependencies": {
+    "playwright": "1.58.2"
+  }
+}
