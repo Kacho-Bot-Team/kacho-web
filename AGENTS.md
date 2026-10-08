@@ -59,8 +59,10 @@ salvo para marcar algo como bloqueado o cancelado.
 3. Trabaja en una rama `nombre/KAC-12-tema` sacada de un `main` **recién actualizado**: `git switch main &&
    git pull`, y después `git switch -c nombre/KAC-12-tema`. El ID en la rama es lo que liga todo.
 
-Al abrir una sesión de Claude Code, `.claude/hooks/estado-git.sh` te avisa si `main` o tu rama están atrás
-de GitHub, si tu rama ya se mergeó o si tienes cambios sin commit. Si todo está al día, no dice nada.
+En `kacho` y `kacho-interno`, al abrir una sesión de Claude Code, `.claude/hooks/estado-git.sh` te avisa si
+`main` o tu rama están atrás de GitHub, si tu rama ya se mergeó o si tienes cambios sin commit. Si todo está
+al día, no dice nada. `kacho-web` no lo lleva porque es público (ver «Nunca»): ahí revisa con
+`git fetch && git status`.
 
 **Mientras trabajas:**
 
@@ -76,7 +78,9 @@ de GitHub, si tu rama ya se mergeó o si tienes cambios sin commit. Si todo est�
 - pegar en Linear secretos, tokens ni datos de clientes;
 - borrar tickets;
 - reasignar trabajo de otra persona sin preguntarle;
-- subir directo a `main`, o hacer `push --force` en una rama que alguien más usa.
+- subir directo a `main`, o hacer `push --force` en una rama que alguien más usa;
+- cambiar `.claude/` (hooks y permisos) sin un PR revisado como código, porque corre solo en la máquina de
+  cada quien; ni abrir Claude Code sobre la rama de un PR de fuera sin revisar antes su `.claude/`.
 
 **Herramientas nuevas.** Cada herramienta que se conecte a los agentes se documenta aquí, con la misma
 estructura: cómo se conecta, cuándo se usa y qué no se hace.
