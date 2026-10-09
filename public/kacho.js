@@ -80,12 +80,9 @@ function commitSector(s,animate) {
     $(`#hero-companion-${side}-name`).textContent = detail.name;
   });
   $('#hero-character-name').textContent = name;
-  $('#hero-character-caption').textContent = d.caption;
   $('#hero-question').textContent = d.question;
   $('#specialist-name').textContent = name;
   $('#specialist-skill').textContent = s.skill;
-  $('#specialist-asks').textContent = s.asks;
-  $('#specialist-next').textContent = s.next;
   $('#chat-name').textContent = name;
   $('#request-character-name').textContent = `Tu Kacho de ${d.name}`;
   updateCasting(s,animate&&previous?.id!==s.id);
@@ -217,7 +214,7 @@ $('#request-form').addEventListener('submit',event => {
   const selected=sectors.find(s => s.id===$('#request-sector').value) || current;
   const goal=$('input[name="goal"]:checked').value;
   const context=$('#context').value.trim();
-  preparedText=[`Solicitud de demo · KACHO`,``,`Negocio: ${company}`,`Giro: ${selected.name}`,`Especialista: Kacho ${DETAILS[selected.id].name}`,`Objetivo inicial: ${goal}`,...KachoProduct.requestDetails(),context?`Contexto: ${context}`:null,``,`Me gustaría revisar una demostración para mi negocio y conocer una propuesta de alcance e inversión.`].filter(line => line!==null).join('\n');
+  preparedText=[`Solicitud de demo · KACHO`,``,`Negocio: ${company}`,`Giro: ${selected.name}`,`Especialista: Kacho ${DETAILS[selected.id].name}`,`Objetivo inicial: ${goal}`,context?`Contexto: ${context}`:null,``,`Me gustaría revisar una demostración para mi negocio y conocer una propuesta de alcance e inversión.`].filter(line => line!==null).join('\n');
   $('#request-summary').textContent=preparedText;
   $('#copy-status').textContent='';
   $('#request-form').hidden=true;
@@ -245,7 +242,6 @@ $('#download-request').addEventListener('click',()=>{
   link.href=url;link.download='solicitud-demo-kacho.txt';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 });
 $('#edit-request').addEventListener('click',()=>editRequest());
-document.addEventListener('kacho:request-changed',()=>{if(!$('#request-result').hidden)editRequest(false);});
 $('#casting-prev').addEventListener('click',()=>moveCasting(-1));
 $('#casting-next').addEventListener('click',()=>moveCasting(1));
 $('#casting-toggle').addEventListener('click',()=>{
@@ -288,7 +284,6 @@ document.addEventListener('pointerdown',event=>{
 });
 matchMedia('(max-width:720px)').addEventListener('change',()=>closeMenu());
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&$('.site-header').classList.contains('menu-open'))closeMenu(true);});
-$('[data-show-handoff]').addEventListener('click',()=>KachoProduct.selectScene('asesor'));
 $$('svg.icon').forEach(svg=>{svg.setAttribute('aria-hidden','true');svg.setAttribute('focusable','false');});
 applyMotion();configureContact();
 

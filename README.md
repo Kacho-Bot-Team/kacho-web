@@ -16,44 +16,17 @@ Abrir http://127.0.0.1:8080/. Con `file://` no carga `giros.json`.
 
 ## Demos y configuración pública
 
-La sección de series incluye ocho ejemplos interactivos: conversación, imágenes,
-notas de voz, carrusel, llamadas, mensajes programados, seguimiento y tablero.
-Se recorren dentro de un mockup de celular con interfaz de WhatsApp; las llamadas
-tienen su propia pantalla y el tablero se presenta como un reporte compartido.
-Son guiones y datos ilustrativos; no llaman a proveedores ni envían mensajes.
-La personalización muestra nombre, color y logo en el navegador. El logo no se
-sube ni se conserva al recargar. La sección de valor muestra un proceso real de
-venta de pasto sintético de forma anónima y una sola escena SVG estática:
-«Antes / Con Kacho», lado a lado también en móvil, con «Abre la llave de los leads».
-El escenario inicial tiene 1,000 leads, 50% de atención, 27% de cotización y 18%
-de calificación: 500 atendidos, 135 cotizaciones y 24.3 leads calificados (se muestra ≈24).
-Con Kacho y captación ampliada: 5,000 leads, 100% de atención, 30% de cotización
-y 20% de calificación: 5,000 atendidos, 1,500 cotizaciones y 300 leads calificados.
-Las tasas iniciales son 10% menores en términos relativos (30 × 0.9 y 20 × 0.9).
-Los incrementos son +4,500 atendidos, +1,365 cotizaciones y ≈+276 leads calificados.
-Cada ficha equivale a cinco leads calificados, con fracción proporcional en el escenario
-inicial. La comparación combina flujo, cobertura y tasas; la captación se trabaja
-por separado. Es una proyección fija, no una mejora medida atribuible al bot.
-La versión móvil adapta el recorrido y mantiene los mismos datos. Ambas imágenes
-incluyen el personaje y la tipografía para cargarse de forma autónoma.
-No publica cifras de clientes ni resultados atribuidos.
+La página tiene seis secciones: inicio, demo, cómo empezamos, precios, preguntas y
+solicitud de demo. La demo recorre ocho ejemplos interactivos (conversación, imágenes,
+notas de voz, carrusel, llamadas, mensajes programados, seguimiento y tablero) dentro de
+un mockup de celular con interfaz de WhatsApp. Son guiones y datos ilustrativos; no llaman
+a proveedores ni envían mensajes. Un solo descargo lo dice bajo el teléfono.
 
-El icono flotante abre un chat genérico de Kacho con preguntas sugeridas, texto libre
-y respuestas locales de ejemplo. Conserva la conversación mientras la página siga
-abierta; permite minimizarla o reiniciarla y respeta reducir movimiento. No usa IA,
-no envía mensajes a un proveedor ni guarda la conversación al recargar. Su interfaz
-vive en `public/chat-widget.css` y `public/chat-widget.js`; `getDemoReply` concentra
-las respuestas que se sustituirán al conectar el motor. Los enlaces llevan a las
-secciones reales de la web; no simulan contacto con una persona.
-
-La sección `#cotizacion-y-seguimiento` anima una consulta de 80 m²: reúne los datos,
-representa una cotización y su documento, los lleva a una oportunidad en CRM y
-muestra la tarea de seguimiento. `quote-flow.css` y `quote-flow.js` contienen la
-escena y sus cuatro pasos. Se reproduce una sola vez al entrar en pantalla, permite
-pausa/repetición y selección manual, y se detiene al salir de pantalla o cambiar de
-pestaña. Con movimiento reducido o pausa global, el recorrido es manual.
-El documento, el CRM y el mensaje son ilustrativos: no genera un PDF real, registra
-clientes ni agenda/envía seguimientos. Los importes permanecen por confirmar.
+En octubre de 2026 (KAC-47) se retiraron el personalizador de marca, la infografía de valor,
+la secuencia animada de cotización y el chat flotante: la página se sentía saturada y con
+demasiado texto. Siguen en el historial de git si hacen falta. En móvil la rueda de giros
+del inicio se oculta (las pestañas de la demo hacen lo mismo) y las funciones se muestran
+como una fila que se desliza.
 
 `public/product-config.js` concentra únicamente configuración apta para publicación:
 
@@ -78,8 +51,9 @@ pnpm test
 
 `package.json` y `pnpm-lock.yaml` fijan la dependencia de pruebas. Las pruebas
 levantan y cierran su propio servidor local; no requieren modificar el puerto de una preview.
-Cubren los diez giros, avance y reinicio, acciones de las ocho demos, personalización,
-solicitud y descarga, enlaces por especialista, chat flotante y tamaños de 320 a 1440 px.
+Cubren el presupuesto de la página (seis secciones, tope de palabras y de pantallas),
+los diez giros, avance y reinicio, acciones de las ocho demos, solicitud y descarga,
+enlaces por especialista y tamaños de 320 a 1440 px.
 Los números de prueba solo se inyectan en el navegador del test y nunca se abren.
 Esta suite no verifica bots reales, Safari ni dispositivos físicos.
 

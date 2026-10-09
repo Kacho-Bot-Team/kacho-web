@@ -29,133 +29,27 @@ async function pageAt(width = 1440) {
   return page;
 }
 
-test('Kacho flotante responde en demo, conserva la charla y permite empezar de nuevo', async () => {
-  const page = await pageAt();
-  const external = [];
+test('la página se mantiene corta: seis secciones, un presupuesto de palabras y sin recursos externos', async () => {
+  const page = await browser.newPage({ viewport:{ width:1440, height:900 }, reducedMotion:'reduce' });
+  const external = [], errors = [], failed = [];
   page.on('request', request => { if (!request.url().startsWith(base)) external.push(request.url()); });
-  assert.equal(await page.locator('#kacho-chat-launcher').count(), 1, 'debe existir el acceso flotante');
-  assert.equal(await page.locator('#kacho-chat').isVisible(), false);
-  await page.locator('#kacho-chat-launcher').click();
-  assert.equal(await page.locator('#kacho-chat').isVisible(), true);
-  assert.match(await page.locator('#kacho-chat-note').textContent(), /respuestas de ejemplo/i);
-  await page.locator('#kacho-chat [data-kacho-question="precio"]').click();
-  await page.waitForFunction(() => document.querySelectorAll('#kacho-chat-messages .kc-answer').length === 1);
-  assert.match(await page.locator('.kc-answer').textContent(), /a medida/i);
-  assert.equal(await page.locator('#kacho-chat-messages .kc-message').count(), 2);
-  await page.locator('#kacho-chat-close').click();
-  assert.equal(await page.locator('#kacho-chat-launcher').evaluate(el => el === document.activeElement), true);
-  await page.locator('#kacho-chat-launcher').click();
-  assert.equal(await page.locator('#kacho-chat-messages .kc-message').count(), 2);
-  await page.locator('#kacho-chat-reset').click();
-  assert.equal(await page.locator('#kacho-chat-messages .kc-message').count(), 0);
-  assert.equal(await page.locator('#kacho-chat-welcome').isVisible(), true);
-  assert.deepEqual(external, [], 'el prototipo no debe enviar mensajes a proveedores');
-  await page.close();
-});
-
-test('el chat maneja teclado, texto desconocido y HTML como texto seguro', async () => {
-  const page = await pageAt();
-  await page.locator('#kacho-chat-launcher').click();
-  const input = page.locator('#kacho-chat-input');
-  assert.equal(await page.locator('#kacho-chat-send').isDisabled(), true);
-  const question = '<img src=x onerror="window.kachoInjection=true"> ¿Hay pingüinos en Marte?';
-  await input.fill(question);
-  await input.press('Enter');
-  await page.waitForFunction(() => document.querySelectorAll('#kacho-chat-messages .kc-answer').length === 1);
-  assert.equal(await page.locator('.kc-message-user p').textContent(), question);
-  assert.equal(await page.locator('.kc-message-user img').count(), 0);
-  assert.equal(await page.evaluate(() => window.kachoInjection), undefined);
-  assert.match(await page.locator('.kc-answer').textContent(), /todavía no.*demo/i);
-  await input.press('Escape');
-  assert.equal(await page.locator('#kacho-chat').isVisible(), false);
-  assert.equal(await page.locator('#kacho-chat-launcher').getAttribute('aria-expanded'), 'false');
-  await page.locator('#kacho-chat-launcher').click();
-  await input.fill('Quiero ver una demo');
-  await input.press('Enter');
-  await page.waitForFunction(() => document.querySelectorAll('#kacho-chat-messages .kc-answer').length === 2);
-  await page.locator('#kacho-chat-messages a[href="#especialistas"]').click();
-  assert.equal(await page.locator('#kacho-chat').isVisible(), false);
-  assert.equal(new URL(page.url()).hash, '#especialistas');
-  await page.close();
-});
-
-test('el chat cabe en móvil y escritorio y no pierde una respuesta al minimizarse', async () => {
-  for (const width of [320, 390, 768, 1440]) {
-    const page = await pageAt(width);
-    await page.setViewportSize({ width, height:740 });
-    await page.locator('#kacho-chat-launcher').click();
-    const layout = await page.locator('#kacho-chat').evaluate(el => {
-      const r = el.getBoundingClientRect();
-      const send = document.querySelector('#kacho-chat-send').getBoundingClientRect();
-      return { left:r.left, right:r.right, top:r.top, bottom:r.bottom,
-        viewport:innerWidth, height:innerHeight, overflow:document.documentElement.scrollWidth > innerWidth,
-        target:Math.min(send.width, send.height) };
-    });
-    assert.ok(layout.left >= 0 && layout.right <= layout.viewport, JSON.stringify(layout));
-    assert.ok(layout.top >= 0 && layout.bottom <= layout.height, JSON.stringify(layout));
-    assert.equal(layout.overflow, false);
-    assert.ok(layout.target >= 44);
-    await page.locator('#kacho-chat-input').fill('x'.repeat(500));
-    await page.locator('#kacho-chat-send').click();
-    await page.locator('#kacho-chat-close').click();
-    await page.waitForFunction(() => document.querySelectorAll('#kacho-chat-messages .kc-answer').length === 1);
-    await page.locator('#kacho-chat-launcher').click();
-    assert.equal(await page.locator('#kacho-chat-messages .kc-message').count(), 2);
-    assert.equal(await page.locator('#kacho-chat-messages').evaluate(el => el.scrollWidth > el.clientWidth), false);
-    await page.close();
-  }
-});
-
-test('la secuencia de cotización muestra documento, CRM y siguiente contacto sin conexiones', async () => {
-  const page = await pageAt(390);
-  const flow = page.locator('#cotizacion-y-seguimiento');
-  assert.equal(await flow.count(), 1, 'debe existir la secuencia de cotización y CRM');
-  await flow.scrollIntoViewIfNeeded();
-  const external = [];
-  page.on('request', request => { if (!request.url().startsWith(base)) external.push(request.url()); });
-  for (let step = 0; step < 4; step++) {
-    await page.locator(`[data-quote-step="${step}"]`).click();
-    assert.equal(await flow.getAttribute('data-step'), String(step));
-    assert.equal(await page.locator(`[data-quote-step="${step}"]`).getAttribute('aria-pressed'), 'true');
-    assert.equal(await flow.evaluate(el => el.scrollWidth > el.clientWidth), false);
-    const clipped = await page.locator('#quote-stage').evaluate(stage => {
-      const bounds = stage.getBoundingClientRect();
-      return [...stage.querySelectorAll('.qf-sheet,.qf-file-label,.qf-crm,.qf-followup')]
-        .filter(el => getComputedStyle(el).visibility !== 'hidden')
-        .some(el => el.getBoundingClientRect().bottom > bounds.bottom + 1);
-    });
-    assert.equal(clipped, false, 'el documento y sus adjuntos deben caber completos');
-  }
-  assert.match(await page.locator('#quote-crm').textContent(), /cotizacion-cafeteria/);
-  assert.match(await page.locator('#quote-followup').textContent(), /revisar la cotización/);
-  assert.match(await page.locator('#quote-disclaimer').textContent(), /ilustrativa/);
-  assert.equal(await flow.getAttribute('data-playing'), 'false', 'reducir movimiento permite recorrido manual');
-  await page.locator('#quote-play').click();
-  assert.equal(await flow.getAttribute('data-step'), '0');
-  assert.deepEqual(external, []);
-  await page.close();
-});
-
-test('la animación de cotización se pausa y se detiene fuera de pantalla', async () => {
-  const page = await browser.newPage({ viewport:{width:1440,height:1000}, reducedMotion:'no-preference' });
-  await page.clock.install();
+  page.on('pageerror', error => errors.push(error.message));
+  page.on('response', response => { if (response.status() >= 400) failed.push(response.url()); });
   await page.goto(base);
   await page.waitForFunction(() => window.__kacho?.ready);
-  const flow = page.locator('#cotizacion-y-seguimiento');
-  await page.locator('#quote-stage').scrollIntoViewIfNeeded();
-  await page.waitForFunction(() => document.querySelector('#cotizacion-y-seguimiento')?.dataset.playing === 'true');
-  await page.clock.runFor(5300);
-  assert.equal(await flow.getAttribute('data-step'), '1');
-  await page.locator('#quote-play').click();
-  await page.clock.runFor(6000);
-  assert.equal(await flow.getAttribute('data-step'), '1', 'pausar conserva el paso');
-  await page.locator('#quote-play').click();
-  await page.clock.runFor(5300);
-  assert.equal(await flow.getAttribute('data-step'), '2');
-  await page.locator('#inicio').scrollIntoViewIfNeeded();
-  await page.waitForFunction(() => document.querySelector('#cotizacion-y-seguimiento').dataset.playing === 'false');
-  await page.clock.runFor(6000);
-  assert.equal(await flow.getAttribute('data-step'), '2', 'no avanza cuando no se ve');
+  const metrics = await page.evaluate(() => ({
+    sections: document.querySelectorAll('main > section').length,
+    words: document.body.innerText.trim().split(/\s+/).length,
+    screens: document.documentElement.scrollHeight / innerHeight,
+    demoCta: [...document.querySelectorAll('a.button, button.button')].filter(el => /pedir demo/i.test(el.textContent)).length
+  }));
+  assert.equal(metrics.sections, 6, 'inicio, demo, cómo empezamos, precios, preguntas y solicitud');
+  assert.ok(metrics.words <= 650, `la página visible tiene ${metrics.words} palabras; el tope es 650`);
+  assert.ok(metrics.screens <= 8, `${metrics.screens.toFixed(1)} pantallas en escritorio; el tope es 8`);
+  assert.ok(metrics.demoCta >= 4, 'el único CTA es «Pedir demo» y se repite en header, hero, precios y formulario');
+  assert.deepEqual(external, []);
+  assert.deepEqual(failed, []);
+  assert.deepEqual(errors, []);
   await page.close();
 });
 
@@ -176,7 +70,6 @@ test('los diez especialistas mantienen la conversación y el WhatsApp sin númer
   for (const id of ids) {
     await page.locator(`button[data-sector="${id}"]`).click();
     await page.waitForFunction(id => window.__kacho.sector === id, id);
-    assert.equal(await page.locator('#demo-whatsapp-pending').isDisabled(), true);
     assert.equal(await page.locator('#demo-whatsapp').isVisible(), false);
     for (const scene of ['orientar', 'precio', 'asesor']) {
       await page.locator(`[data-scene="${scene}"]`).click();
@@ -209,21 +102,7 @@ test('el visitante puede recorrer las capacidades sin solicitudes a proveedores'
   await page.close();
 });
 
-test('nombre y logo locales se aplican a la marca y llegan a la solicitud', async () => {
-  const page = await pageAt();
-  await page.locator('#brand-company').fill('Constructora <Juanito>');
-  assert.equal(await page.locator('#brand-preview-name').textContent(), 'Constructora <Juanito>');
-  assert.equal(await page.locator('#brand-preview-name juanito').count(), 0);
-  await page.locator('#brand-logo-input').setInputFiles({ name:'logo.svg', mimeType:'image/svg+xml', buffer:Buffer.from('<svg/>') });
-  assert.match(await page.locator('#brand-upload-status').textContent(), /PNG|JPG|WebP/);
-  await page.locator('#brand-use').click();
-  assert.equal(await page.locator('#company').inputValue(), 'Constructora <Juanito>');
-  await page.locator('#request-form button[type="submit"]').click();
-  assert.match(await page.locator('#request-summary').textContent(), /Constructora <Juanito>/);
-  await page.close();
-});
-
-test('demos y personalización caben en móvil y respetan reducir movimiento', async () => {
+test('las demos caben en móvil y escritorio y respetan reducir movimiento', async () => {
   for (const width of [320, 390, 768, 1440]) {
     const page = await pageAt(width);
     for (const feature of ['conversacion', 'imagenes', 'voz', 'carrusel', 'llamadas', 'programados', 'seguimiento', 'tablero']) {
@@ -273,22 +152,6 @@ test('las acciones de cada demo producen su siguiente paso y se pueden reiniciar
   await page.close();
 });
 
-test('el logo válido se muestra localmente y puede retirarse', async () => {
-  const page = await pageAt();
-  const requests = [];
-  page.on('request', request => { if (!request.url().startsWith(base) && !request.url().startsWith('blob:')) requests.push(request.url()); });
-  const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aX1sAAAAASUVORK5CYII=', 'base64');
-  await page.locator('#brand-logo-input').setInputFiles({ name:'mi-logo.png', mimeType:'image/png', buffer:png });
-  await page.waitForFunction(() => document.querySelector('[data-logo-slot] img')?.naturalWidth > 0);
-  assert.equal(await page.locator('[data-logo-slot] img').count(), 2);
-  await page.locator('[data-brand-color="salvia"]').click();
-  assert.equal(await page.locator('#brand-preview').getAttribute('data-color'), 'salvia');
-  await page.locator('#brand-logo-remove').click();
-  assert.equal(await page.locator('[data-logo-slot] img').count(), 0);
-  assert.deepEqual(requests, []);
-  await page.close();
-});
-
 test('cada número configurado abre su destino exacto; el resto permanece cerrado', async () => {
   const page = await browser.newPage({ reducedMotion:'reduce' });
   const config = (await readFile(path.resolve(__dirname, '../public/product-config.js'), 'utf8'))
@@ -297,6 +160,7 @@ test('cada número configurado abre su destino exacto; el resto permanece cerrad
     .replace('ecommerce: null', 'ecommerce: "javascript:alert(1)"');
   await page.route('**/product-config.js', route => route.fulfill({ contentType:'text/javascript', body:config }));
   await page.goto(base); await page.waitForFunction(() => window.__kacho?.ready);
+  assert.equal(await page.locator('#demo-whatsapp').isVisible(), true);
   let link = new URL(await page.locator('#demo-whatsapp').getAttribute('href'));
   assert.equal(link.origin + link.pathname, 'https://wa.me/12025550101');
   assert.match(link.searchParams.get('text'), /Kacho Materiales/);
@@ -308,54 +172,34 @@ test('cada número configurado abre su destino exacto; el resto permanece cerrad
   await page.locator('button[data-sector="ecommerce"]').click();
   await page.waitForFunction(() => window.__kacho.sector === 'ecommerce');
   assert.equal(await page.locator('#demo-whatsapp').getAttribute('href'), null);
-  assert.equal(await page.locator('#demo-whatsapp-pending').isDisabled(), true);
+  assert.equal(await page.locator('#demo-whatsapp').isVisible(), false);
   await page.close();
 });
 
-test('la solicitud conserva los servicios seleccionados y se descarga sin enviarse', async () => {
+test('la solicitud se prepara con giro y objetivo, se descarga y no se envía', async () => {
   const page = await pageAt(390);
-  await page.locator('.service-picker input[value="Llamadas"]').check();
   await page.locator('#company').fill('Empresa de prueba');
+  await page.locator('input[name="goal"][value="Preparar cotizaciones"]').check();
   await page.locator('#request-form button[type="submit"]').click();
-  assert.match(await page.locator('#request-summary').textContent(), /Servicios de interés:.*Llamadas/);
+  const summary = await page.locator('#request-summary').textContent();
+  assert.match(summary, /Negocio: Empresa de prueba/);
+  assert.match(summary, /Giro: Materiales/);
+  assert.match(summary, /Objetivo inicial: Preparar cotizaciones/);
   assert.match(await page.locator('#result-state').textContent(), /no se ha enviado/);
+  assert.equal(await page.locator('#send-request').isVisible(), false, 'sin canal configurado no hay botón de envío');
   const downloaded = page.waitForEvent('download');
   await page.locator('#download-request').click();
   const file = await downloaded;
   assert.equal(file.suggestedFilename(), 'solicitud-demo-kacho.txt');
   const content = await readFile(await file.path(), 'utf8');
   assert.match(content, /Empresa de prueba/);
-  assert.match(content, /Llamadas/);
   await page.locator('#edit-request').click();
   assert.equal(await page.locator('#company').inputValue(), 'Empresa de prueba');
   await page.close();
 });
 
-test('cambiar servicios invalida el resumen anterior para no pedir una propuesta incompleta', async () => {
-  const page = await pageAt();
-  await page.locator('#company').fill('Mi empresa');
-  await page.locator('#request-form button[type="submit"]').click();
-  await page.locator('.service-picker input[value="Llamadas"]').check();
-  assert.equal(await page.locator('#request-result').isVisible(), false);
-  await page.locator('#request-form button[type="submit"]').click();
-  assert.match(await page.locator('#request-summary').textContent(), /Llamadas/);
-  await page.close();
-});
-
-test('la identidad de la solicitud cambia solo al aplicar la vista previa', async () => {
-  const page = await pageAt();
-  await page.locator('#brand-company').fill('Empresa A');
-  await page.locator('#brand-use').click();
-  await page.locator('#brand-company').fill('Empresa B');
-  await page.locator('#request-form button[type="submit"]').click();
-  const summary = await page.locator('#request-summary').textContent();
-  assert.match(summary, /Identidad: Empresa A/);
-  assert.doesNotMatch(summary, /Empresa B/);
-  await page.close();
-});
-
-test('el selector del hero conserva el giro al recargar y el menú móvil cierra con Escape', async () => {
-  const page = await pageAt(390);
+test('el selector del hero conserva el giro al recargar; en móvil se oculta y el menú cierra con Escape', async () => {
+  const page = await pageAt(1440);
   await page.locator('#casting-next').click();
   await page.waitForFunction(() => window.__kacho.sector === 'construccion');
   assert.equal(await page.locator('#hero-character').getAttribute('src'), 'assets/construccion.webp');
@@ -363,6 +207,9 @@ test('el selector del hero conserva el giro al recargar y el menú móvil cierra
   await page.reload();
   await page.waitForFunction(() => window.__kacho?.sector === 'construccion');
   assert.equal(await page.locator('#chat-name').textContent(), 'Kacho Obra');
+  await page.setViewportSize({ width:390, height:844 });
+  assert.equal(await page.locator('#hero-casting').isVisible(), false, 'la rueda no se muestra en móvil');
+  assert.equal(await page.locator('button[data-sector]').first().isVisible(), true, 'las pestañas de giro siguen disponibles');
   await page.locator('#menu-toggle').click();
   assert.equal(await page.locator('#menu-toggle').getAttribute('aria-expanded'), 'true');
   await page.keyboard.press('Escape');

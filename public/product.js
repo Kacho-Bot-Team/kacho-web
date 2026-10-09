@@ -30,7 +30,6 @@ window.KachoProduct = (() => {
   };
   let sector, detail, feature = 'conversacion', scene = 'orientar', messageCount = 1;
   let card = 0, callStep = 0, dashboard = 'atencion', followup = 'pendiente';
-  let logoURL = null, logoName = '', uploadVersion = 0, appliedBrand = null;
 
   function messages() {
     if (scene === 'precio') return [
@@ -83,19 +82,13 @@ window.KachoProduct = (() => {
     const valid = typeof phone === 'string' && /^[1-9]\d{7,14}$/.test(phone);
     const link = $('#demo-whatsapp');
     link.hidden = !valid;
-    $('#demo-whatsapp-pending').hidden = valid;
     link.removeAttribute('href');
     if (valid) link.href = `https://wa.me/${phone}?text=${encodeURIComponent(`Hola, quiero probar la demo de Kacho ${detail.name}.`)}`;
-    $('#demo-whatsapp-status').textContent = valid
-      ? `Abre el WhatsApp de Kacho ${detail.name}. Tú decides cuándo enviar el mensaje.`
-      : `El número de Kacho ${detail.name} estará disponible próximamente. Mientras tanto, recorre la demo aquí.`;
   }
 
   function selectSector(next, nextDetail) {
     sector = next; detail = nextDetail; scene = 'orientar'; messageCount = 1;
-    $('#brand-character').src = `assets/${sector.id}.webp`;
-    $('#brand-character').alt = `Kacho ${detail.name} con una muestra de tu marca`;
-    updatePhone(); updateBrand(); selectFeature('conversacion');
+    updatePhone(); selectFeature('conversacion');
   }
 
   function selectFeature(next) {
@@ -103,7 +96,6 @@ window.KachoProduct = (() => {
     feature = next; card = 0; callStep = 0; dashboard = 'atencion'; followup = 'pendiente';
     $$('[data-feature]').filter(button => button.tagName === 'BUTTON').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.feature === feature)));
     $('#demo-caption').textContent = FEATURES[feature][0];
-    $('#feature-benefit').textContent = FEATURES[feature][1];
     $('#conversation-view').hidden = feature !== 'conversacion';
     $('#conversation-scenarios').hidden = feature !== 'conversacion';
     $('#conversation-actions').hidden = feature !== 'conversacion';
@@ -111,17 +103,6 @@ window.KachoProduct = (() => {
     $('#feature-panel').dataset.feature = feature;
     $('.phone-screen').dataset.mode = feature;
     $('#feature-panel').scrollTop = 0;
-    const notes = {
-      conversacion: 'Conversación ilustrativa. Avanza un mensaje por clic; el bot aún no está conectado.',
-      imagenes: 'Imagen y conversación ilustrativas. Las medidas y condiciones se confirman con el cliente.',
-      voz: 'Nota de voz ilustrativa: puedes leer la transcripción. Esta demo no reproduce ni graba audio.',
-      carrusel: 'Catálogo ilustrativo. Tu empresa aporta las fotos, precios y disponibilidad reales.',
-      llamadas: 'Llamada ilustrativa con guion escrito. Esta demo no hace llamadas ni usa tu micrófono.',
-      programados: 'Simulación: no agenda ni envía mensajes. Los horarios y permisos se definen con tu empresa.',
-      seguimiento: 'Recorrido ilustrativo. El seguimiento se ajusta al estado de la conversación y a tus reglas.',
-      tablero: 'Vista de un reporte compartido desde tu tablero, con datos ficticios. No es una función nativa de WhatsApp.'
-    };
-    $('#device-note').textContent = notes[feature];
     if (feature === 'conversacion') renderConversation();
     else renderFeature();
   }
@@ -219,66 +200,10 @@ window.KachoProduct = (() => {
     $('#schedule-result').scrollIntoView({block:'nearest', behavior:'instant'});
   });
 
-  function updateBrand() {
-    const name = $('#brand-company').value.trim() || 'Tu empresa';
-    const initials = name.split(/\s+/).slice(0,2).map(word => Array.from(word)[0]).join('').toUpperCase();
-    $('#brand-preview-name').textContent = name;
-    $('#brand-greeting-name').textContent = name;
-    $('#brand-greeting').textContent = `Hola, soy el asistente de ${name}. ${detail ? detail.question : 'Cuéntame qué tienes en mente.'}`;
-    $$('[data-logo-slot]').forEach(slot => {
-      slot.replaceChildren();
-      if (logoURL) { const image = document.createElement('img'); image.src=logoURL; image.alt='Tu logo'; slot.append(image); }
-      else slot.textContent = initials;
-    });
-  }
-  $('#brand-company').addEventListener('input', updateBrand);
-  $('#brand-logo-input').addEventListener('change', async event => {
-    const file = event.target.files[0], version = ++uploadVersion;
-    if (!file) return;
-    const status = $('#brand-upload-status');
-    if (!['image/png','image/jpeg','image/webp'].includes(file.type) || file.size > 2*1024*1024) {
-      status.textContent = 'Elige un PNG, JPG o WebP de hasta 2 MB.'; event.target.value=''; return;
-    }
-    const url = URL.createObjectURL(file), image = new Image(); image.src=url;
-    try {
-      await image.decode();
-      if (version !== uploadVersion) { URL.revokeObjectURL(url); return; }
-      if (logoURL) URL.revokeObjectURL(logoURL);
-      logoURL=url; logoName=file.name;
-      updateBrand(); $('#brand-logo-remove').hidden=false;
-      status.textContent = 'Tu logo está en la vista previa. No se ha enviado ni guardado.';
-    } catch { URL.revokeObjectURL(url); if (version === uploadVersion) status.textContent='No pudimos abrir esa imagen. Prueba otro PNG, JPG o WebP.'; }
-  });
-  $('#brand-logo-remove').addEventListener('click', () => {
-    ++uploadVersion; if (logoURL) URL.revokeObjectURL(logoURL);
-    logoURL=null; logoName=''; $('#brand-logo-input').value=''; $('#brand-logo-remove').hidden=true;
-    $('#brand-upload-status').textContent='PNG, JPG o WebP, hasta 2 MB. Solo se muestra en tu navegador.';
-    updateBrand(); $('#brand-logo-input').focus();
-  });
-  $$('[data-brand-color]').forEach(button => button.addEventListener('click', () => {
-    $('#brand-preview').dataset.color=button.dataset.brandColor;
-    $$('[data-brand-color]').forEach(item => item.setAttribute('aria-pressed',String(item===button)));
-  }));
-  $('#brand-use').addEventListener('click', () => {
-    if (!$('#request-result').hidden) $('#edit-request').click();
-    $('#company').value = $('#brand-company').value.trim();
-    $('#company').dispatchEvent(new Event('input'));
-    appliedBrand = { name: $('#brand-company').value.trim(), color: $('#brand-preview').dataset.color, logoName };
-    $('#tu-kacho').scrollIntoView({behavior:document.body.dataset.motion==='off'?'instant':'smooth'});
-    $('#company').focus({preventScroll:true});
-  });
-
   const money = new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:0});
   for (const [id,key] of [['setup-price','setupMXN'],['monthly-price','monthlyMXN']]) {
     const value=window.KACHO_CONFIG?.pricing?.[key];
     if (typeof value==='number' && Number.isFinite(value) && value>0) $('#'+id).textContent=money.format(value)+' MXN';
   }
-  function requestDetails() {
-    const services = $$('.service-picker input:checked').map(input => input.value);
-    return [services.length ? `Servicios de interés: ${services.join(', ')}` : 'Servicios: por definir en la propuesta',
-      appliedBrand ? `Identidad: ${appliedBrand.name || 'Por definir'}; acento ${appliedBrand.color}` : null,
-      appliedBrand?.logoName ? `Logo probado localmente: ${appliedBrand.logoName} (no se adjunta ni se envía)` : null].filter(Boolean);
-  }
-  $('.service-picker').addEventListener('change', () => document.dispatchEvent(new Event('kacho:request-changed')));
-  return { selectSector, selectScene, requestDetails };
+  return { selectSector, selectScene };
 })();
