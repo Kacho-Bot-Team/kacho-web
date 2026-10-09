@@ -53,6 +53,24 @@ test('la página se mantiene corta: seis secciones, un presupuesto de palabras y
   await page.close();
 });
 
+test('el scroll sobre el teléfono sigue avanzando la página (no se atora)', async () => {
+  for (const width of [1440, 390]) {
+    const page = await pageAt(width);
+    for (const feature of ['conversacion', 'llamadas', 'tablero']) {
+      await page.locator(`button[data-feature="${feature}"]`).click();
+      await page.evaluate(() => scrollTo(0, document.querySelector('#especialistas').offsetTop + 380));
+      const chat = await page.locator('.phone-chat').boundingBox();
+      await page.mouse.move(chat.x + chat.width / 2, chat.y + Math.min(chat.height * 0.6, 300));
+      const before = await page.evaluate(() => scrollY);
+      for (let i = 0; i < 3; i++) await page.mouse.wheel(0, 120);
+      await page.waitForFunction(start => scrollY > start + 200, before, { timeout: 2000 }).catch(() => {});
+      const moved = await page.evaluate(start => scrollY - start, before);
+      assert.ok(moved > 200, `${width}px · ${feature}: la página avanzó ${moved}px con la rueda sobre el teléfono`);
+    }
+    await page.close();
+  }
+});
+
 test('cada clic agrega un mensaje y conserva el contexto de la conversación', async () => {
   const page = await pageAt();
   const first = await page.locator('#messages .message').first().textContent();

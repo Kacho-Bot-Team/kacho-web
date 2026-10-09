@@ -54,8 +54,8 @@
 .chat-header-icons .icon { width: 21px; height: 21px; stroke-width: 1.6; }
 .phone-chat { position: relative; isolation: isolate; display: flex; flex-direction: column; min-height: 0; flex: 1; background: #ece5db; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='180' viewBox='0 0 160 180'%3E%3Cg fill='none' stroke='%23c8bca8' stroke-width='1.1' opacity='.27'%3E%3Cpath d='M15 18q14-12 21 0t-16 15l-8 5 3-10q-7-5 0-10ZM111 16l12 7-12 7-12-7Z M111 16v14M57 72q9-20 19-5t-17 25q-15-14-2-20ZM110 116c-6-17 20-24 19-7s-21 21-19 7ZM14 123l16-9 11 19-16 9Z M21 120l11 19M64 141l9-7 7 9-8 7Z M127 62l8 4-2 9-9 2-5-7ZM54 16l4-5m-2 14 7 3M13 73l7 2m-4 7 3-8M86 109l6-6m-8-1 9 8M135 156l5-8m-9 3 10 4'/%3E%3C/g%3E%3C/svg%3E"); }
 .chat-date { align-self: center; font-size: 10px; line-height: 1; color: #586164; padding: 6px 12px; background: #f8f9f4ed; border-radius: 7px; box-shadow: 0 1px 1px #00000012; margin: 13px 0 6px; }
-#conversation-view { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #b7bab3 transparent; }
-.product-board .messages, .product-board .feature-panel { padding: 12px 12px 18px; min-height: 0; flex: 1; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #b7bab3 transparent; }
+#conversation-view { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #b7bab3 transparent; }
+.product-board .messages, .product-board .feature-panel { padding: 12px 12px 18px; min-height: 0; flex: 1; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #b7bab3 transparent; }
 .product-board .messages { overflow: visible; padding-bottom: 0; }
 .product-board .message { position: relative; width: fit-content; max-width: 88%; padding: 9px 10px 5px; margin: 0 0 10px; border-radius: 10px; box-shadow: 0 1px 1px #00000019; overflow-wrap: anywhere; color: #172127; }
 .product-board .message.buyer { background: #d9fdd3; margin-left: auto; margin-right: 0; border-top-right-radius: 2px; }
