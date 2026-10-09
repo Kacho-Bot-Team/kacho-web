@@ -5,7 +5,7 @@
 .specialists .sector-tab { flex: 1 0 118px; min-height: 82px; flex-direction: column; padding: 8px; gap: 3px; text-align: center; }
 .specialists .sector-tab img { width: 60px; height: 60px; }
 .specialists .sector-tab span { font-size: 12px; }
-.specialist-workbench { grid-template-columns: minmax(290px,.8fr) minmax(0,1.2fr); gap: clamp(28px,5vw,80px); background: transparent; padding: 0; align-items: center; }
+.specialist-workbench { grid-template-columns: minmax(290px,.8fr) minmax(0,1.2fr); gap: clamp(28px,5vw,80px); background: transparent; padding: 0; }
 .specialist-workbench .specialist-identity { display: block; margin: 0; }
 .specialist-profile { display: grid; grid-template-columns: 130px 1fr; align-items: center; gap: 12px; }
 .specialist-workbench .specialist-portrait { height: 155px; margin: 0; }
@@ -244,3 +244,12 @@
   .specialist-workbench .specialist-identity { margin-bottom: 28px; }
 }
 @media (min-width: 901px) { .launch-steps { grid-template-columns: repeat(3, 1fr); gap: 38px 48px; } }
+/* KAC-47 · escritorio: «Escoge el tipo de respuesta» como lista vertical junto al teléfono, sin tarjetas. */
+@media (min-width: 901px) {
+  .capability-label { margin: 26px 0 8px; }
+  .capability-picker { flex-direction: column; gap: 2px; max-width: 330px; }
+  .capability-picker button { width: 100%; min-height: 46px; padding: 7px 14px 7px 7px; border-radius: 10px; border-color: transparent; background: transparent; font-size: 15px; }
+  .capability-picker button:hover { background: #fff5e8; border-color: transparent; }
+  .capability-picker button[aria-pressed=true] { background: var(--ink); border-color: var(--ink); color: var(--white); }
+  .brand-line { margin-top: 18px; }
+}
