@@ -13,3 +13,4 @@ node_modules/
 
 # Bitácora local; las notas del equipo pertenecen al repo privado
 /planes.md
+/planes/
