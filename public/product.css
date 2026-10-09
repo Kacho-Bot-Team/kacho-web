@@ -253,3 +253,19 @@
   .capability-picker button[aria-pressed=true] { background: var(--ink); border-color: var(--ink); color: var(--white); }
   .brand-line { margin-top: 18px; }
 }
+/* KAC-47 · precios en móvil: primero lo que incluye, después el botón; renglones compactos. */
+@media (max-width: 720px) {
+  .offer-section { display: flex; flex-direction: column; }
+  .offer-copy { display: contents; }
+  .offer-copy > p { margin-top: 14px; }
+  .offer-sheet { order: 1; margin-top: 26px; padding: 4px 22px; }
+  .offer-copy .button { order: 2; margin-top: 22px; align-self: stretch; justify-content: center; }
+  .price-lines { margin-top: 0; }
+  .price-lines article { flex-direction: row; align-items: baseline; gap: 14px; padding: 18px 0; }
+  .price-lines article:last-child { padding-bottom: 18px; }
+  .price-lines article > div { max-width: none; flex: 1; }
+  .price-lines h4 { font-size: 18px; margin: 4px 0 4px; }
+  .price-lines p { font-size: 14px; line-height: 1.5; }
+  .price-lines strong { font-size: 13px; padding-top: 0; }
+}
+.offer-sheet { padding-top: 12px; }
