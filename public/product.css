@@ -5,25 +5,22 @@
 .specialists .sector-tab { flex: 1 0 118px; min-height: 82px; flex-direction: column; padding: 8px; gap: 3px; text-align: center; }
 .specialists .sector-tab img { width: 60px; height: 60px; }
 .specialists .sector-tab span { font-size: 12px; }
-.specialist-workbench { grid-template-columns: minmax(290px,.8fr) minmax(0,1.2fr); gap: clamp(28px,5vw,80px); background: transparent; padding: 0; }
+.specialist-workbench { grid-template-columns: minmax(290px,.8fr) minmax(0,1.2fr); gap: clamp(28px,5vw,80px); background: transparent; padding: 0; align-items: center; }
 .specialist-workbench .specialist-identity { display: block; margin: 0; }
 .specialist-profile { display: grid; grid-template-columns: 130px 1fr; align-items: center; gap: 12px; }
 .specialist-workbench .specialist-portrait { height: 155px; margin: 0; }
 .specialist-workbench .specialist-info { margin: 0; padding: 0; max-width: none; }
 .specialist-workbench .specialist-info h3 { font-size: clamp(25px,2.4vw,34px); }
 .specialist-workbench .specialist-info > p { font-size: 14px; line-height: 1.65; margin-top: 12px; }
-.capability-label { margin: 28px 0 17px; }
+.capability-label { margin: 24px 0 12px; }
 .capability-label strong { display: block; font-size: 19px; font-weight: 600; letter-spacing: -.02em; }
-.capability-picker { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.capability-picker button { position: relative; display: flex; align-items: center; gap: 12px; padding: 15px 24px 15px 10px; min-height: 87px; background: var(--white); border-radius: 10px; text-align: left; border: 1px solid #d6c6b5; box-shadow: 0 3px 8px #5b382608; transition: background .2s, border-color .2s, transform .2s; }
-.capability-picker button::after { content: '›'; position: absolute; right: 9px; top: 50%; transform: translateY(-50%); font-size: 23px; color: var(--accent); }
-.capability-picker button:hover { background: #fff5e8; border-color: var(--accent); transform: translateY(-2px); }
-.capability-picker button:active { transform: translateY(1px); }
-.capability-picker button[aria-pressed=true] { background: #fce3ca; border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent), 0 5px 15px #5b382609; }
-.capability-picker button[aria-pressed=true]::after { content: '✓'; font-size: 12px; font-weight: 700; }
-.capability-picker button[aria-pressed=true] .feature-symbol { color: var(--white); background: var(--accent); }
-.capability-picker button > span:last-child { font-size: 14px; font-weight: 500; }
-.feature-symbol { display: grid; place-items: center; flex: 0 0 34px; height: 36px; font-size: 27px; font-weight: 400; background: #f6e5d7; color: var(--accent); border-radius: 6px; }
+.capability-picker { display: flex; flex-wrap: wrap; gap: 8px; }
+.capability-picker button { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 7px 16px 7px 7px; background: var(--white); border: 1px solid var(--line); border-radius: 999px; font-size: 14px; font-weight: 500; color: var(--ink); text-align: left; transition: background .18s, border-color .18s, color .18s; }
+.capability-picker button:hover { border-color: var(--accent); background: #fff5e8; }
+.capability-picker button[aria-pressed=true] { background: var(--ink); border-color: var(--ink); color: var(--white); }
+.capability-picker button[aria-pressed=true] .feature-symbol { background: var(--accent); color: var(--white); }
+.feature-symbol { display: grid; place-items: center; flex: 0 0 28px; width: 28px; height: 28px; background: #f6e5d7; color: var(--accent); border-radius: 50%; }
+.feature-symbol .icon { width: 15px; height: 15px; }
 /* A device-sized preview, viewed from the customer's side of the chat. */
 .demo-dock { min-width: 0; position: sticky; top: 104px; padding: 12px 10px; scroll-margin-top: 98px; }
 .demo-intro, .demo-dock > .scenario-picker, .device-note, .phone-trial { width: 100%; max-width: 384px; margin-left: auto; margin-right: auto; }
@@ -177,19 +174,12 @@
   .specialist-workbench { grid-template-columns: minmax(290px,.85fr) minmax(0,1.15fr); gap: 30px; }
   .specialist-profile { grid-template-columns: 95px 1fr; }
   .specialist-workbench .specialist-portrait { height: 140px; }
-  .capability-picker { gap: 4px; }
-  .capability-picker button { gap: 8px; padding: 10px 22px 10px 8px; }
-  .feature-symbol { flex-basis: 28px; height: 33px; }
-  .capability-picker button > span:last-child { font-size: 13px; }
 }
 @media (max-width: 900px) {
   .specialist-workbench { grid-template-columns: 1fr; gap: 28px; }
   .specialist-profile { grid-template-columns: 135px 1fr; }
   .specialist-workbench .specialist-portrait { height: 150px; }
   .specialist-workbench .specialist-info > p { max-width: 540px; }
-  .capability-picker { grid-template-columns: repeat(4,minmax(0,1fr)); }
-  .capability-picker button { flex-direction: column; align-items: start; padding: 12px 10px; }
-  .feature-symbol { width: 32px; flex-basis: 32px; }
   .demo-dock { position: static; padding: 0; }
   .price-lines article { flex-direction: column; gap: 12px; }
   .price-lines strong { text-align: left; }
@@ -203,19 +193,12 @@
   .specialist-workbench .specialist-info > p { font-size: 14px; }
   .specialist-workbench .specialist-info h3 { font-size: 26px; }
   .specialist-workbench .specialist-portrait { height: 130px; }
-  .capability-label { margin-top: 22px; }
-  .capability-picker { grid-template-columns: 1fr 1fr; gap: 6px; }
-  .capability-picker button { flex-direction: row; align-items: center; min-height: 88px; padding: 12px 20px 12px 9px; gap: 9px; }
-  .capability-picker button > span:last-child { font-size: 14px; }
   .price-lines article { flex-direction: row; gap: 18px; }
   .price-lines article > div { max-width: 75%; }
   .price-lines strong { font-size: 13px; }
   .price-lines p { font-size: 14px; }
 }
 @media (max-width: 380px) {
-  .capability-picker button { padding: 10px 18px 10px 6px; gap: 6px; }
-  .capability-picker button > span:last-child { font-size: 13px; }
-  .feature-symbol { width: 26px; flex-basis: 26px; }
   .price-lines article { flex-direction: column; }
   .price-lines article > div { max-width: none; }
 }
@@ -251,13 +234,13 @@
   .specialists .sector-tab img { width: 46px; height: 46px; }
   .specialists .sector-tab span { font-size: 12px; }
   .capability-label { margin: 18px 0 10px; }
-  .capability-picker { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 6px; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
-  .capability-picker button { flex: 0 0 auto; flex-direction: row; align-items: center; min-height: 44px; padding: 8px 14px 8px 8px; gap: 8px; border-radius: 999px; box-shadow: none; }
-  .capability-picker button::after { content: none; }
+  .capability-picker { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+  .capability-picker button { flex: 0 0 auto; padding: 6px 14px 6px 6px; }
   .capability-picker button > span:last-child { font-size: 13px; white-space: nowrap; }
-  .feature-symbol { flex: 0 0 26px; width: 26px; height: 26px; border-radius: 50%; }
+  .feature-symbol { flex-basis: 26px; width: 26px; height: 26px; }
   .feature-symbol .icon { width: 14px; height: 14px; }
   .brand-line { margin-top: 16px; font-size: 14px; }
   .request-character { display: none; }
+  .specialist-workbench .specialist-identity { margin-bottom: 28px; }
 }
 @media (min-width: 901px) { .launch-steps { grid-template-columns: repeat(3, 1fr); gap: 38px 48px; } }
