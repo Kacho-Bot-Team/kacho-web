@@ -194,7 +194,7 @@ test('cada número configurado abre su destino exacto; el resto permanece cerrad
   await page.close();
 });
 
-test('la solicitud se prepara con giro y objetivo, se descarga y no se envía', async () => {
+test('la solicitud se prepara con giro y objetivo y se abre en el correo configurado, sin enviarse sola', async () => {
   const page = await pageAt(390);
   await page.locator('#company').fill('Empresa de prueba');
   await page.locator('input[name="goal"][value="Preparar cotizaciones"]').check();
@@ -203,8 +203,14 @@ test('la solicitud se prepara con giro y objetivo, se descarga y no se envía', 
   assert.match(summary, /Negocio: Empresa de prueba/);
   assert.match(summary, /Giro: Materiales/);
   assert.match(summary, /Objetivo inicial: Preparar cotizaciones/);
-  assert.match(await page.locator('#result-state').textContent(), /no se ha enviado/);
-  assert.equal(await page.locator('#send-request').isVisible(), false, 'sin canal configurado no hay botón de envío');
+  const config = await page.evaluate(() => window.KACHO_CONFIG.contact);
+  assert.ok(config.email, 'hay un correo de contacto configurado');
+  assert.match(await page.locator('#result-state').textContent(), new RegExp(config.email.replace('.', '\\.')));
+  const mail = new URL(await page.locator('#send-request').getAttribute('href'));
+  assert.equal(mail.protocol + mail.pathname, `mailto:${config.email}`);
+  assert.match(decodeURIComponent(mail.search), /Empresa de prueba/);
+  assert.equal(await page.locator('#send-request').isVisible(), true);
+  assert.equal(await page.locator('#footer-contact').getAttribute('href'), `mailto:${config.email}`);
   const downloaded = page.waitForEvent('download');
   await page.locator('#download-request').click();
   const file = await downloaded;
