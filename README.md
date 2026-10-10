@@ -16,17 +16,24 @@ Abrir http://127.0.0.1:8080/. Con `file://` no carga `giros.json`.
 
 ## Demos y configuración pública
 
-La página tiene seis secciones: inicio, demo, cómo empezamos, precios, preguntas y
-solicitud de demo. La demo recorre ocho ejemplos interactivos (conversación, imágenes,
+La página tiene siete secciones: inicio, demo, valor, cómo empezamos, precios, preguntas
+y solicitud de demo. La demo recorre ocho ejemplos interactivos (conversación, imágenes,
 notas de voz, carrusel, llamadas, mensajes programados, seguimiento y tablero) dentro de
 un mockup de celular con interfaz de WhatsApp. Son guiones y datos ilustrativos; no llaman
 a proveedores ni envían mensajes. Un solo descargo lo dice bajo el teléfono.
 
-En octubre de 2026 (KAC-47) se retiraron el personalizador de marca, la infografía de valor,
-la secuencia animada de cotización y el chat flotante: la página se sentía saturada y con
-demasiado texto. Siguen en el historial de git si hacen falta. En móvil la rueda de giros
-del inicio se oculta (las pestañas de la demo hacen lo mismo) y las funciones se muestran
-como una fila que se desliza.
+La sección de valor es una sola imagen SVG estática, «Antes / Con Kacho», con versión de
+escritorio (`assets/valor-kacho.svg`) y de celular (`assets/valor-kacho-mobile.svg`).
+Antes: 1,000 leads, 50% de atención, 27% de cotización y 18% de calificación (≈24 leads
+calificados). Con Kacho y captación ampliada: 5,000 leads, 100% de atención, 30% y 20%
+(300 leads calificados). Es una proyección con supuestos fijos, no una mejora medida;
+la propia imagen lo dice y no publica cifras de clientes.
+
+En octubre de 2026 (KAC-47) se retiraron el personalizador de marca, la secuencia animada
+de cotización y el chat flotante: la página se sentía saturada y con demasiado texto.
+Siguen en el historial de git. En móvil la rueda de giros del inicio se oculta (las
+pestañas de la demo hacen lo mismo) y los tipos de respuesta se muestran como una fila
+que se desliza.
 
 `public/product-config.js` concentra únicamente configuración apta para publicación:
 

@@ -285,3 +285,12 @@
 }
 /* KAC-47 · cómo empezamos en móvil: el mismo aire que las demás secciones. */
 @media (max-width: 720px) { .launch-section { padding-top: 64px; } }
+/* KAC-47 · el embudo «Antes / Con Kacho» vuelve: imagen fija, sin pie largo (los supuestos van dentro del SVG). */
+.impact-section { padding-top: 90px; padding-bottom: 60px; }
+.impact-section .section-intro { max-width: 1050px; }
+.impact-section .section-intro > p:last-child { max-width: 640px; }
+.fixed-value-graphic { max-width: 1280px; margin: 36px auto 0; }
+.fixed-value-graphic picture, .fixed-value-graphic img { display: block; width: 100%; }
+.fixed-value-graphic img { height: auto; }
+@media (max-width: 900px) { .fixed-value-graphic { max-width: 520px; } }
+@media (max-width: 720px) { .impact-section { padding-top: 64px; padding-bottom: 20px; } .fixed-value-graphic { margin-top: 24px; } }
