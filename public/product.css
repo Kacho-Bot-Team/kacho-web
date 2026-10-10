@@ -278,3 +278,8 @@
 /* KAC-47 · datos de contacto del lead: correo y WhatsApp lado a lado cuando hay espacio. */
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
 @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+/* KAC-47 · preguntas en móvil: respuestas legibles, mismo tamaño que la pregunta. */
+@media (max-width: 720px) {
+  .faq-list summary { padding: 20px 0; }
+  .faq-list details p { font-size: 16px; line-height: 1.6; color: var(--ink); opacity: .78; padding: 0 12px 22px 0; }
+}
