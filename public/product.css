@@ -241,6 +241,7 @@
   .feature-symbol .icon { width: 14px; height: 14px; }
   .brand-line { margin-top: 16px; font-size: 14px; }
   .request-character { display: none; }
+  .request-direct { margin-bottom: 28px; }
   .specialist-workbench .specialist-identity { margin-bottom: 28px; }
 }
 @media (min-width: 901px) { .launch-steps { grid-template-columns: repeat(3, 1fr); gap: 38px 48px; } }
@@ -269,3 +270,8 @@
   .price-lines strong { font-size: 13px; padding-top: 0; }
 }
 .offer-sheet { padding-top: 12px; }
+/* KAC-47 · contacto: línea directa junto al formulario y envío como acción principal. */
+.request-direct { margin-top: 16px; font-size: 15px; line-height: 1.6; color: var(--muted); }
+.request-direct a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.result-actions #send-request { flex-basis: 100%; justify-content: center; }
+.result-actions .button-outline { flex: 1; justify-content: center; }

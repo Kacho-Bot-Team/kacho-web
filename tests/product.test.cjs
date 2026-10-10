@@ -210,7 +210,12 @@ test('la solicitud se prepara con giro y objetivo y se abre en el correo configu
   assert.equal(mail.protocol + mail.pathname, `mailto:${config.email}`);
   assert.match(decodeURIComponent(mail.search), /Empresa de prueba/);
   assert.equal(await page.locator('#send-request').isVisible(), true);
+  assert.match(await page.locator('#send-request').textContent(), /Enviar por correo/);
+  assert.equal(await page.locator('#send-request').getAttribute('target'), null, 'mailto no abre una pestaña vacía');
   assert.equal(await page.locator('#footer-contact').getAttribute('href'), `mailto:${config.email}`);
+  assert.equal(await page.locator('.request-direct a').getAttribute('href'), `mailto:${config.email}`);
+  const html = await readFile(path.resolve(__dirname, '../public/index.html'), 'utf8');
+  assert.equal(html.split(`mailto:${config.email}`).length - 1, 2, 'el HTML estático lleva el mismo correo que la configuración (pie y solicitud)');
   const downloaded = page.waitForEvent('download');
   await page.locator('#download-request').click();
   const file = await downloaded;

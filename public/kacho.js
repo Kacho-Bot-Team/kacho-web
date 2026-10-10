@@ -203,12 +203,13 @@ function editRequest(focus=true) {
 }
 
 function configureContact() {
+  // El correo está escrito en el HTML para lectores sin JavaScript; aquí se alinea con la configuración.
+  $$('[data-contact-email]').forEach(link=>{
+    if(CONTACT.email){link.href=`mailto:${CONTACT.email}`;link.textContent=CONTACT.email;}
+    else (link.closest('.request-direct')||link).hidden=true;
+  });
   if(!CONTACT.whatsapp&&!CONTACT.email) return;
   $('#form-note').textContent = CONTACT.whatsapp ? 'Al final la envías por WhatsApp.' : 'Al final la envías desde tu correo.';
-  if(CONTACT.email) {
-    const link=$('#footer-contact');
-    link.href=`mailto:${CONTACT.email}`;link.textContent=CONTACT.email;link.hidden=false;
-  }
 }
 
 $('#request-form').addEventListener('submit',event => {
@@ -229,7 +230,8 @@ $('#request-form').addEventListener('submit',event => {
     $('#result-state').textContent='Revísala y abre WhatsApp cuando quieras enviarla.';
   } else if(CONTACT.email) {
     $('#send-request').href=`mailto:${CONTACT.email}?subject=${encodeURIComponent('Demo Kacho · '+company)}&body=${encodeURIComponent(preparedText)}`;
-    $('#send-request').innerHTML=`Abrir correo ${icon('arrow-up')}`;
+    $('#send-request').innerHTML=`Enviar por correo ${icon('arrow-up')}`;
+    $('#send-request').removeAttribute('target');
     $('#send-request').hidden=false;
     $('#result-state').textContent=`Revísala y envíala a ${CONTACT.email}.`;
   }
