@@ -80,12 +80,9 @@ function commitSector(s,animate) {
     $(`#hero-companion-${side}-name`).textContent = detail.name;
   });
   $('#hero-character-name').textContent = name;
-  $('#hero-character-caption').textContent = d.caption;
   $('#hero-question').textContent = d.question;
   $('#specialist-name').textContent = name;
   $('#specialist-skill').textContent = s.skill;
-  $('#specialist-asks').textContent = s.asks;
-  $('#specialist-next').textContent = s.next;
   $('#chat-name').textContent = name;
   $('#request-character-name').textContent = `Tu Kacho de ${d.name}`;
   updateCasting(s,animate&&previous?.id!==s.id);
@@ -206,18 +203,23 @@ function editRequest(focus=true) {
 }
 
 function configureContact() {
+  // El correo está escrito en el HTML para lectores sin JavaScript; aquí se alinea con la configuración.
+  $$('[data-contact-email]').forEach(link=>{
+    if(CONTACT.email){link.href=`mailto:${CONTACT.email}`;link.textContent=CONTACT.email;}
+    else (link.closest('.request-direct')||link).hidden=true;
+  });
   if(!CONTACT.whatsapp&&!CONTACT.email) return;
-  $('#form-note').textContent = 'Primero revisas la solicitud. Después puedes abrir tu canal de contacto para enviarla.';
+  $('#form-note').textContent = CONTACT.whatsapp ? 'Al final la envías por WhatsApp.' : 'Al final la envías desde tu correo.';
 }
 
 $('#request-form').addEventListener('submit',event => {
   event.preventDefault();
   const company=$('#company').value.trim();
+  const name=$('#lead-name').value.trim(), email=$('#lead-email').value.trim(), phone=$('#lead-phone').value.trim();
   if(!company){$('#company').setCustomValidity('Escribe el nombre de tu negocio.');$('#company').reportValidity();return;}
   const selected=sectors.find(s => s.id===$('#request-sector').value) || current;
-  const goal=$('input[name="goal"]:checked').value;
   const context=$('#context').value.trim();
-  preparedText=[`Solicitud de demo · KACHO`,``,`Negocio: ${company}`,`Giro: ${selected.name}`,`Especialista: Kacho ${DETAILS[selected.id].name}`,`Objetivo inicial: ${goal}`,...KachoProduct.requestDetails(),context?`Contexto: ${context}`:null,``,`Me gustaría revisar una demostración para mi negocio y conocer una propuesta de alcance e inversión.`].filter(line => line!==null).join('\n');
+  preparedText=[`Solicitud de demo · KACHO`,``,`Nombre: ${name}`,`Correo: ${email}`,`WhatsApp: ${phone}`,`Negocio: ${company}`,`Giro: ${selected.name}`,`Especialista: Kacho ${DETAILS[selected.id].name}`,context?`Contexto: ${context}`:null,``,`Me gustaría revisar una demostración para mi negocio y conocer una propuesta de alcance e inversión.`].filter(line => line!==null).join('\n');
   $('#request-summary').textContent=preparedText;
   $('#copy-status').textContent='';
   $('#request-form').hidden=true;
@@ -228,9 +230,10 @@ $('#request-form').addEventListener('submit',event => {
     $('#result-state').textContent='Revísala y abre WhatsApp cuando quieras enviarla.';
   } else if(CONTACT.email) {
     $('#send-request').href=`mailto:${CONTACT.email}?subject=${encodeURIComponent('Demo Kacho · '+company)}&body=${encodeURIComponent(preparedText)}`;
-    $('#send-request').innerHTML=`Abrir correo ${icon('arrow-up')}`;
+    $('#send-request').innerHTML=`Enviar por correo ${icon('arrow-up')}`;
+    $('#send-request').removeAttribute('target');
     $('#send-request').hidden=false;
-    $('#result-state').textContent='Revísala y abre tu correo cuando quieras enviarla.';
+    $('#result-state').textContent=`Revísala y envíala a ${CONTACT.email}.`;
   }
   $('#request-summary').focus({preventScroll:true});
 });
@@ -245,7 +248,6 @@ $('#download-request').addEventListener('click',()=>{
   link.href=url;link.download='solicitud-demo-kacho.txt';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 });
 $('#edit-request').addEventListener('click',()=>editRequest());
-document.addEventListener('kacho:request-changed',()=>{if(!$('#request-result').hidden)editRequest(false);});
 $('#casting-prev').addEventListener('click',()=>moveCasting(-1));
 $('#casting-next').addEventListener('click',()=>moveCasting(1));
 $('#casting-toggle').addEventListener('click',()=>{
@@ -288,7 +290,6 @@ document.addEventListener('pointerdown',event=>{
 });
 matchMedia('(max-width:720px)').addEventListener('change',()=>closeMenu());
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&$('.site-header').classList.contains('menu-open'))closeMenu(true);});
-$('[data-show-handoff]').addEventListener('click',()=>KachoProduct.selectScene('asesor'));
 $$('svg.icon').forEach(svg=>{svg.setAttribute('aria-hidden','true');svg.setAttribute('focusable','false');});
 applyMotion();configureContact();
 
