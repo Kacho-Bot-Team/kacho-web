@@ -196,10 +196,16 @@ test('cada número configurado abre su destino exacto; el resto permanece cerrad
 
 test('la solicitud se prepara con giro y objetivo y se abre en el correo configurado, sin enviarse sola', async () => {
   const page = await pageAt(390);
+  await page.locator('#lead-name').fill('Ana López');
+  await page.locator('#lead-email').fill('ana@ejemplo.mx');
+  await page.locator('#lead-phone').fill('33 1234 5678');
   await page.locator('#company').fill('Empresa de prueba');
   await page.locator('input[name="goal"][value="Preparar cotizaciones"]').check();
   await page.locator('#request-form button[type="submit"]').click();
   const summary = await page.locator('#request-summary').textContent();
+  assert.match(summary, /Nombre: Ana López/);
+  assert.match(summary, /Correo: ana@ejemplo\.mx/);
+  assert.match(summary, /WhatsApp: 33 1234 5678/);
   assert.match(summary, /Negocio: Empresa de prueba/);
   assert.match(summary, /Giro: Materiales/);
   assert.match(summary, /Objetivo inicial: Preparar cotizaciones/);
@@ -224,6 +230,25 @@ test('la solicitud se prepara con giro y objetivo y se abre en el correo configu
   assert.match(content, /Empresa de prueba/);
   await page.locator('#edit-request').click();
   assert.equal(await page.locator('#company').inputValue(), 'Empresa de prueba');
+  await page.close();
+});
+
+test('sin nombre, correo válido y WhatsApp no se prepara la solicitud', async () => {
+  const page = await pageAt(390);
+  await page.locator('#company').fill('Empresa de prueba');
+  await page.locator('#request-form button[type="submit"]').click();
+  assert.equal(await page.locator('#request-result').isVisible(), false, 'faltan datos de contacto');
+  await page.locator('#lead-name').fill('Ana López');
+  await page.locator('#lead-email').fill('no-es-correo');
+  await page.locator('#lead-phone').fill('123');
+  await page.locator('#request-form button[type="submit"]').click();
+  assert.equal(await page.locator('#request-result').isVisible(), false, 'correo y teléfono inválidos');
+  assert.equal(await page.locator('#lead-email').evaluate(el => el.validity.valid), false);
+  assert.equal(await page.locator('#lead-phone').evaluate(el => el.validity.patternMismatch), true, 'el patrón del teléfono se aplica');
+  await page.locator('#lead-email').fill('ana@ejemplo.mx');
+  await page.locator('#lead-phone').fill('+52 (33) 1234-5678');
+  await page.locator('#request-form button[type="submit"]').click();
+  assert.equal(await page.locator('#request-result').isVisible(), true);
   await page.close();
 });
 

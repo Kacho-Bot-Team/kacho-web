@@ -275,3 +275,6 @@
 .request-direct a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 .result-actions #send-request { flex-basis: 100%; justify-content: center; }
 .result-actions .button-outline { flex: 1; justify-content: center; }
+/* KAC-47 · datos de contacto del lead: correo y WhatsApp lado a lado cuando hay espacio. */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+@media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }

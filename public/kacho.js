@@ -215,11 +215,12 @@ function configureContact() {
 $('#request-form').addEventListener('submit',event => {
   event.preventDefault();
   const company=$('#company').value.trim();
+  const name=$('#lead-name').value.trim(), email=$('#lead-email').value.trim(), phone=$('#lead-phone').value.trim();
   if(!company){$('#company').setCustomValidity('Escribe el nombre de tu negocio.');$('#company').reportValidity();return;}
   const selected=sectors.find(s => s.id===$('#request-sector').value) || current;
   const goal=$('input[name="goal"]:checked').value;
   const context=$('#context').value.trim();
-  preparedText=[`Solicitud de demo · KACHO`,``,`Negocio: ${company}`,`Giro: ${selected.name}`,`Especialista: Kacho ${DETAILS[selected.id].name}`,`Objetivo inicial: ${goal}`,context?`Contexto: ${context}`:null,``,`Me gustaría revisar una demostración para mi negocio y conocer una propuesta de alcance e inversión.`].filter(line => line!==null).join('\n');
+  preparedText=[`Solicitud de demo · KACHO`,``,`Nombre: ${name}`,`Correo: ${email}`,`WhatsApp: ${phone}`,`Negocio: ${company}`,`Giro: ${selected.name}`,`Especialista: Kacho ${DETAILS[selected.id].name}`,`Objetivo inicial: ${goal}`,context?`Contexto: ${context}`:null,``,`Me gustaría revisar una demostración para mi negocio y conocer una propuesta de alcance e inversión.`].filter(line => line!==null).join('\n');
   $('#request-summary').textContent=preparedText;
   $('#copy-status').textContent='';
   $('#request-form').hidden=true;
