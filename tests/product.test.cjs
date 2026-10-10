@@ -194,13 +194,12 @@ test('cada número configurado abre su destino exacto; el resto permanece cerrad
   await page.close();
 });
 
-test('la solicitud se prepara con giro y objetivo y se abre en el correo configurado, sin enviarse sola', async () => {
+test('la solicitud se prepara con contacto y giro y se abre en el correo configurado, sin enviarse sola', async () => {
   const page = await pageAt(390);
   await page.locator('#lead-name').fill('Ana López');
   await page.locator('#lead-email').fill('ana@ejemplo.mx');
   await page.locator('#lead-phone').fill('33 1234 5678');
   await page.locator('#company').fill('Empresa de prueba');
-  await page.locator('input[name="goal"][value="Preparar cotizaciones"]').check();
   await page.locator('#request-form button[type="submit"]').click();
   const summary = await page.locator('#request-summary').textContent();
   assert.match(summary, /Nombre: Ana López/);
@@ -208,7 +207,6 @@ test('la solicitud se prepara con giro y objetivo y se abre en el correo configu
   assert.match(summary, /WhatsApp: 33 1234 5678/);
   assert.match(summary, /Negocio: Empresa de prueba/);
   assert.match(summary, /Giro: Materiales/);
-  assert.match(summary, /Objetivo inicial: Preparar cotizaciones/);
   const config = await page.evaluate(() => window.KACHO_CONFIG.contact);
   assert.ok(config.email, 'hay un correo de contacto configurado');
   assert.match(await page.locator('#result-state').textContent(), new RegExp(config.email.replace('.', '\\.')));
