@@ -29,7 +29,7 @@ async function pageAt(width = 1440) {
   return page;
 }
 
-test('la página se mantiene corta: seis secciones, un presupuesto de palabras y sin recursos externos', async () => {
+test('la página se mantiene corta: siete secciones, un presupuesto de palabras y sin recursos externos', async () => {
   const page = await browser.newPage({ viewport:{ width:1440, height:900 }, reducedMotion:'reduce' });
   const external = [], errors = [], failed = [];
   page.on('request', request => { if (!request.url().startsWith(base)) external.push(request.url()); });
@@ -43,7 +43,7 @@ test('la página se mantiene corta: seis secciones, un presupuesto de palabras y
     screens: document.documentElement.scrollHeight / innerHeight,
     demoCta: [...document.querySelectorAll('a.button, button.button')].filter(el => /pedir demo/i.test(el.textContent)).length
   }));
-  assert.equal(metrics.sections, 6, 'inicio, demo, cómo empezamos, precios, preguntas y solicitud');
+  assert.equal(metrics.sections, 7, 'inicio, demo, valor, cómo empezamos, precios, preguntas y solicitud');
   assert.ok(metrics.words <= 650, `la página visible tiene ${metrics.words} palabras; el tope es 650`);
   assert.ok(metrics.screens <= 8, `${metrics.screens.toFixed(1)} pantallas en escritorio; el tope es 8`);
   assert.ok(metrics.demoCta >= 4, 'el único CTA es «Pedir demo» y se repite en header, hero, precios y formulario');
@@ -67,6 +67,21 @@ test('el scroll sobre el teléfono sigue avanzando la página (no se atora)', as
       const moved = await page.evaluate(start => scrollY - start, before);
       assert.ok(moved > 200, `${width}px · ${feature}: la página avanzó ${moved}px con la rueda sobre el teléfono`);
     }
+    await page.close();
+  }
+});
+
+test('el embudo «Antes / Con Kacho» carga su versión de escritorio y de celular', async () => {
+  for (const [width, file] of [[1440, 'valor-kacho.svg'], [390, 'valor-kacho-mobile.svg']]) {
+    const page = await pageAt(width);
+    const img = page.locator('#beneficios img');
+    await img.scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => document.querySelector('#beneficios img').complete && document.querySelector('#beneficios img').naturalWidth > 0);
+    const info = await img.evaluate(el => ({ src: el.currentSrc, width: el.getBoundingClientRect().width, alt: el.alt }));
+    assert.ok(info.src.includes(file), `${width}px usa ${info.src}`);
+    assert.ok(info.width > 300, `${width}px: la imagen mide ${info.width}px de ancho`);
+    assert.match(info.alt, /Antes.*Con Kacho/s);
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
     await page.close();
   }
 });
