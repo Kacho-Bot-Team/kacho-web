@@ -283,3 +283,5 @@
   .faq-list summary { padding: 20px 0; }
   .faq-list details p { font-size: 16px; line-height: 1.6; color: var(--ink); opacity: .78; padding: 0 12px 22px 0; }
 }
+/* KAC-47 · cómo empezamos en móvil: el mismo aire que las demás secciones. */
+@media (max-width: 720px) { .launch-section { padding-top: 64px; } }
