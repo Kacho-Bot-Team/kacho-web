@@ -1,0 +1,43 @@
+{
+  "_nota": "Textos de las páginas por giro (KAC-64). No van en public/giros.json porque ese archivo también alimenta al bot (ADR 0012 / KAC-31). Las páginas se generan con `pnpm run giros`; no edites el HTML de public/giros/ a mano.",
+  "inmobiliaria": {
+    "slug": "inmobiliarias",
+    "miga": "Inmobiliarias",
+    "color": "--azul-niebla",
+    "titulo": "Chatbot de WhatsApp para inmobiliarias · Kacho Inmuebles",
+    "descripcion": "Kacho Inmuebles es un chatbot de WhatsApp para inmobiliarias: pregunta zona, presupuesto, uso y fecha, y prepara la solicitud de visita para tu asesor.",
+    "h1": "Chatbot de WhatsApp para inmobiliarias",
+    "lema": ["Un vendedor. Muy de tu", "inmobiliaria."],
+    "respuesta": "Kacho Inmuebles atiende por WhatsApp a quien pregunta por una propiedad. Antes de pasarlo con tu asesor, pregunta la zona, el presupuesto, si es para vivir o invertir y para cuándo lo necesita. Con eso prepara una solicitud de visita, y tu asesor llega a la cita sabiendo qué busca el cliente.",
+    "alt": "Kacho Inmuebles: personaje azul niebla con saco azul marino, camisa blanca y una llave dorada en la mano",
+    "preguntas": [
+      ["Zona", "Colonia, municipio o cerca de qué. Es lo primero que separa una opción que sirve de una que no."],
+      ["Presupuesto", "Un rango, no una cifra exacta. Así las opciones que le muestre tu asesor caben en lo que piensa gastar."],
+      ["Uso", "Para vivir, para invertir o para poner un negocio. Cambia qué propiedades tienen sentido y qué se pregunta después."],
+      ["Fecha", "Para cuándo lo necesita. Separa a quien quiere mudarse este mes de quien apenas está explorando."]
+    ],
+    "recibe": {
+      "intro": "Cuando la conversación llega a la visita, Kacho le entrega a tu asesor una solicitud con lo que ya sabe y lo que falta confirmar. La cita la confirma tu asesor.",
+      "solicitud": [
+        ["Busca", "Departamento para comprar, para vivir."],
+        ["Zona", "Chapalita."],
+        ["Falta confirmar", "Presupuesto, número de recámaras y fecha para la visita."],
+        ["Siguiente paso", "Tu asesor revisa opciones vigentes y confirma la visita."]
+      ],
+      "cierre": "Si el cliente pide algo que solo decide tu equipo, como negociar el precio, Kacho se lo pasa a tu asesor con la conversación completa."
+    },
+    "faq": [
+      ["¿Sustituye a mis asesores?", "No. Atiende la primera conversación y prepara la visita. La visita, la negociación y el cierre siguen siendo de tu asesor."],
+      ["¿Puede hablar de las propiedades que tengo disponibles?", "Solo con la información que tú le das: tus propiedades, sus condiciones y lo que puede decir de cada una. Cómo se mantiene al día ese inventario lo definimos contigo en la propuesta."],
+      ["¿Sirve para venta y para renta?", "Sí, si tu inmobiliaria maneja las dos. Al prepararlo acordamos qué operaciones atiende y qué preguntas cambian en cada una; en renta, por ejemplo, importan la fecha de entrada y el plazo del contrato."],
+      ["¿Qué pasa si el cliente quiere negociar el precio?", "Kacho no negocia ni promete precios. Comparte solo lo que tú definas como publicable y pasa la conversación a tu asesor con su contexto."],
+      ["¿Y si escribe alguien que apenas está viendo?", "Lo atiende con la misma paciencia y le pregunta para cuándo busca. Tu asesor ve esa respuesta en la solicitud y decide a quién llamar primero."],
+      ["¿Funciona con el WhatsApp de mi inmobiliaria?", "Revisamos tu número de WhatsApp Business y las herramientas que usa tu equipo, como tu CRM inmobiliario. Qué se conecta y cómo se confirma en la propuesta."]
+    ],
+    "llamado": {
+      "titulo": ["¿Lo ves en tu", "inmobiliaria?"],
+      "texto": "Cuéntanos cómo trabaja tu equipo y preparamos una demo con tu giro."
+    },
+    "vecinos": ["construccion", "muebles"]
+  }
+}
