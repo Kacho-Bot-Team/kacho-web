@@ -37,12 +37,20 @@ Todo lo que se sube aquí lo puede ver y clonar cualquiera, y ya no se puede «d
 > cámbiala en los tres. La guía para personas (las 10 áreas, proyectos y tareas) está en
 > `kacho-interno/docs/LINEAR.md`.
 
-Workspace **Kacho**, equipo **Kacho**. Los tickets tienen la forma `KAC-12`.
+El equipo en Linear se llama **Kachobot**, con clave `KAC`: los tickets tienen la forma `KAC-12`. Las herramientas
+lo buscan por ese nombre; con «Kacho» no lo encuentran.
 
 **Conexión.** `.mcp.json` declara el MCP oficial de Linear (`https://mcp.linear.app/mcp`). Ese servidor lo
 hospeda Linear; en tu máquina no corre nada. La primera vez, en Claude Code, corre `/mcp` y entra **con tu propia
 cuenta**: así cada acción en Linear queda a nombre de quien la hizo. Para Codex o Cursor, ver
-https://linear.app/docs/mcp. Nunca guardes llaves de Linear en el repo, ni uses la de otra persona.
+https://linear.app/docs/mcp. Nunca guardes llaves de Linear en el repo, ni uses la de otra persona. Si en tu
+sesión no aparece Linear, dilo antes de empezar: sin él no ves los tickets ni el documento del equipo, y su
+estado no se adivina.
+
+**Hacia dónde vamos.** El documento de Linear «Cómo trabajamos en Kacho» dice hacia dónde vamos, lo que falta
+decidir, los frentes con su líder y la ruta crítica. Léelo antes de planear o de proponer prioridades. Lo
+recién decidido puede estar todavía en un PR abierto: revisa los PRs abiertos antes de dar algo por decidido o
+por pendiente.
 
 **Los estados se mueven solos.** La integración GitHub ↔ Linear liga la rama o el PR con el ticket cuando llevan
 su ID, y mueve el estado: rama → en curso, PR → en revisión, merge → hecho. **No muevas estados a mano**,
@@ -52,10 +60,13 @@ salvo para marcar algo como bloqueado o cancelado.
 
 1. Busca si ya hay un ticket (por título y área) antes de crear uno. Nada de duplicados.
 2. Si no existe y el trabajo es de más de una hora, o lo pidió alguien, créalo:
-   - **un área** de las 10 de `LINEAR.md`;
-   - un responsable;
-   - qué se entrega.
-   Un proyecto lleva además su «Terminado cuando…».
+   - **un área** de las 10 de `LINEAR.md`. Si de verdad toca dos, son dos tickets, uno por área, ligados;
+   - un responsable. Sin responsable se queda en Backlog;
+   - qué se entrega;
+   - su proyecto, si es parte de uno.
+
+   Un ticket lo termina una persona en 1 o 2 días; si tarda más, se parte en sub-tickets o se vuelve proyecto.
+   **Urgent** es solo para la ruta crítica. Un proyecto lleva además su «Terminado cuando…».
 3. Trabaja en una rama `nombre/KAC-12-tema` sacada de un `main` **recién actualizado**: `git switch main &&
    git pull`, y después `git switch -c nombre/KAC-12-tema`. El ID en la rama es lo que liga todo.
 
@@ -67,17 +78,24 @@ al día, no dice nada. `kacho-web` no lo lleva porque es público (ver «Nunca»
 **Mientras trabajas:**
 
 - Las decisiones importantes se anotan como **comentario en el ticket**: qué se decidió, por qué y con el
-  enlace al PR o al ADR.
+  enlace al PR o al ADR. Si cambian el rumbo, van también al documento «Cómo trabajamos en Kacho» y a la
+  descripción del proyecto.
+- Lo que todavía no aceptan los tres se escribe como **propuesta**, diciendo quién falta.
 - Si aparece trabajo nuevo, va en **otro ticket**, ligado al actual. No se agranda el que estás haciendo.
 - Si algo te bloquea, márcalo como bloqueado y di en el ticket qué falta y de quién depende.
 - **Antes de abrir el PR**, o si tu rama ya lleva más de un día, trae lo nuevo de `main`:
   `git fetch && git merge origin/main`. Si hay conflicto, lo resuelves tú en tu rama, que sabes qué querías.
+- **En la descripción del PR,** `Closes KAC-12` cierra el ticket cuando el PR se mergea; `Part of KAC-12` lo liga
+  sin cerrarlo, para cuando el ticket todavía tiene trabajo pendiente.
+- **Antes de subir commits a un PR**, revisa que siga abierto (`gh pr view`): aquí los PRs se mergean rápido.
 
 **Nunca:**
 
 - pegar en Linear secretos, tokens ni datos de clientes;
 - borrar tickets;
 - reasignar trabajo de otra persona sin preguntarle;
+- trabajar con la cuenta de otra persona, ni con la de KachoBot, que es de la organización: tickets, commits y
+  PRs salen a nombre de quien los hace;
 - subir directo a `main`, o hacer `push --force` en una rama que alguien más usa;
 - cambiar `.claude/` (hooks y permisos) sin un PR revisado como código, porque corre solo en la máquina de
   cada quien; ni abrir Claude Code sobre la rama de un PR de fuera sin revisar antes su `.claude/`.
