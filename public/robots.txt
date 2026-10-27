@@ -1,0 +1,7 @@
+# kachobot.com — todos los rastreadores son bienvenidos, incluidos los de IA.
+# Mientras la página lleve <meta name="robots" content="noindex,nofollow"> (KAC-17),
+# no se bloquea nada aquí: si robots.txt bloqueara, los buscadores no verían el noindex.
+User-agent: *
+Allow: /
+
+Sitemap: https://kachobot.com/sitemap.xml
