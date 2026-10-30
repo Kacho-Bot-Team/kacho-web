@@ -49,7 +49,7 @@ el sitio.
 tabla y di en el PR por qué va en ese repo. En `kacho`, la prueba `apps/web/tests/repos.test.ts` falla con cada
 carpeta nueva hasta que se agrega a su lista en el mismo PR: así la decisión queda a la vista de quien revisa.
 
-**Herramientas internas y Linear** (propuesta de KAC-134; falta que la acepten los tres):
+**Herramientas internas y Linear** (KAC-134, aceptado por los tres el 2026-10-29):
 
 - el código de una herramienta interna va en `kacho`, como `apps/presentaciones`;
 - sus datos de marca, comercial o equipo se leen desde tu copia local de `kacho-interno`. No se copian a `kacho`,
