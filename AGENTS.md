@@ -31,6 +31,32 @@ Todo lo que se sube aquí lo puede ver y clonar cualquiera, y ya no se puede «d
 - `public/giros.json` (los 10 giros) también existe en `kacho/packages/ficha/plantillas/giros.json`. Mientras no
   se acuerde cuál es la fuente (ADR 0012 de `kacho`), **no se cambia uno sin el otro**.
 
+## Qué va en cada repo
+
+> Esta sección es **igual en los tres repos** (`kacho`, `kacho-web` y `kacho-interno`). Si la cambias en uno,
+> cámbiala en los tres. La decisión de fondo es el ADR 0012 de `kacho`.
+
+| Repo | Qué va | Qué **no** va |
+|---|---|---|
+| `kacho` (privado) | El motor, el código de las herramientas internas y la documentación técnica: arquitectura, ADRs, infraestructura, cuentas y accesos, roadmap | El sitio público, la marca en alta resolución, precios y propuestas |
+| `kacho-web` (**público**) | Solo lo que sirve kachobot.com | Nada interno: lo que se sube ahí ya no se puede «despublicar» |
+| `kacho-interno` (privado) | Marca, comercial (propuesta, precios, competidores) y equipo (la guía de Linear y la bitácora) | Código e infraestructura |
+
+**En caso de duda:** lo técnico va a `kacho` y lo demás a `kacho-interno`. Nada va a `kacho-web` si no lo necesita
+el sitio.
+
+**Antes de crear una carpeta nueva** (en la raíz o, en `kacho`, dentro de `apps/` o `packages/`), revisa esta
+tabla y di en el PR por qué va en ese repo. En `kacho`, la prueba `apps/web/tests/repos.test.ts` falla con cada
+carpeta nueva hasta que se agrega a su lista en el mismo PR: así la decisión queda a la vista de quien revisa.
+
+**Herramientas internas y Linear** (propuesta de KAC-134; falta que la acepten los tres):
+
+- el código de una herramienta interna va en `kacho`, como `apps/presentaciones`;
+- sus datos de marca, comercial o equipo se leen desde tu copia local de `kacho-interno`. No se copian a `kacho`,
+  y lo que la herramienta genera no se versiona: va en su `.gitignore`;
+- no se guarda en git una copia de Linear (tickets, comentarios ni documentos), en ningún repo. La fuente es
+  Linear, y la copia se queda vieja apenas se guarda.
+
 ## Linear (tareas del equipo)
 
 > Esta sección es **igual en los tres repos** (`kacho`, `kacho-web` y `kacho-interno`). Si la cambias en uno,
