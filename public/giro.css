@@ -1,0 +1,102 @@
+/* Páginas por giro (KAC-64). Se cargan después de kacho.css y usan sus tokens.
+   --giro: el color de apoyo del especialista, lo pone el <body> de cada página. */
+
+.giro-migas{padding-top:26px}
+.giro-migas ol{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;font-size:13px;color:var(--muted)}
+.giro-migas li+li::before{content:"›";margin-right:6px}
+.giro-migas a{text-decoration:underline;text-underline-offset:3px}
+.giro-migas a:hover{color:var(--accent)}
+.giro-migas [aria-current]{color:var(--ink)}
+
+.giro-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:6%;align-items:center;padding-top:34px;padding-bottom:48px}
+.giro-especialista{display:inline-flex;font-size:13px;font-weight:600;letter-spacing:.01em;padding:7px 13px;border-radius:999px;background:color-mix(in srgb,var(--giro) 32%,var(--paper))}
+.giro-hero h1{font-size:clamp(46px,5.1vw,80px);line-height:1.02;letter-spacing:-.04em;font-weight:500;max-width:720px;margin-top:22px;text-wrap:balance}
+.giro-lema{font-size:clamp(21px,1.9vw,27px);line-height:1.3;letter-spacing:-.02em;margin-top:18px}
+.giro-respuesta{font-size:18px;line-height:1.68;color:var(--muted);max-width:570px;margin-top:24px}
+.giro-retrato{position:relative;isolation:isolate;display:grid;place-items:center;aspect-ratio:1}
+.giro-retrato::before{content:"";position:absolute;inset:9%;border-radius:50%;background:color-mix(in srgb,var(--giro) 40%,var(--paper));z-index:-1}
+.giro-retrato img{width:100%;max-width:560px;height:auto}
+
+.giro-bloque{padding-top:76px;padding-bottom:76px}
+.giro-encabezado{display:grid;grid-template-columns:1fr 1fr;gap:6%;align-items:end;margin-bottom:46px}
+.giro-encabezado h2{font-size:clamp(38px,3.9vw,60px)}
+.giro-encabezado p{font-size:16px;line-height:1.7;color:var(--muted);max-width:470px}
+
+.giro-conversa{display:grid;grid-template-columns:.8fr 1.2fr;gap:6%;align-items:center}
+.giro-conversa .giro-encabezado{display:block;margin-bottom:0}
+.giro-conversa .giro-encabezado p{margin-top:18px}
+.giro-chat{list-style:none;margin:0;padding:30px;display:grid;gap:14px;background:var(--white);border:1px solid var(--line);border-radius:20px}
+.giro-mensaje{max-width:76%;padding:14px 18px 15px;border-radius:16px}
+.giro-mensaje span{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:5px}
+.giro-mensaje p{font-size:16px;line-height:1.55}
+.giro-mensaje-cliente{justify-self:start;background:var(--soft);border-bottom-left-radius:4px}
+.giro-mensaje-kacho{justify-self:end;background:color-mix(in srgb,var(--giro) 30%,var(--white));border-bottom-right-radius:4px}
+
+.giro-preguntas{margin-top:0}
+
+.giro-entrega-cuerpo{display:grid;grid-template-columns:1fr 1fr;gap:6%;align-items:center}
+.giro-solicitud{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:24px 28px 8px}
+.giro-solicitud header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.giro-solicitud header span{order:2;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.giro-solicitud h3{font-size:21px;font-weight:500;letter-spacing:-.02em}
+.giro-solicitud dl{margin:0}
+.giro-solicitud dl>div{display:grid;grid-template-columns:132px 1fr;gap:16px;padding:15px 0;border-bottom:1px solid var(--line)}
+.giro-solicitud dl>div:last-child{border-bottom:0}
+.giro-solicitud dt{font-size:13px;color:var(--muted);padding-top:2px}
+.giro-solicitud dd{margin:0;font-size:15px;line-height:1.55}
+.giro-entrega-cierre{font-size:17px;line-height:1.7;max-width:440px;border-left:3px solid var(--giro);padding-left:22px}
+
+.giro-faq h2{position:sticky;top:120px;align-self:start}
+.giro-faq-lista article{border-bottom:1px solid var(--line);padding:24px 0}
+.giro-faq-lista article:first-child{border-top:1px solid var(--line)}
+.giro-faq-lista h3{font-size:17px;font-weight:600;line-height:1.4;letter-spacing:-.01em}
+.giro-faq-lista p{font-size:15px;line-height:1.75;color:var(--muted);margin-top:9px;max-width:600px}
+
+.giro-llamado{position:relative;isolation:isolate;text-align:center;padding:84px calc(var(--pad) + 32px)}
+.giro-llamado::before{content:"";position:absolute;inset:0 var(--pad);border-radius:24px;background:color-mix(in srgb,var(--giro) 26%,var(--paper));z-index:-1}
+.giro-llamado h2{font-size:clamp(36px,4vw,60px)}
+.giro-llamado p{font-size:17px;line-height:1.65;color:var(--muted);max-width:520px;margin:18px auto 0;text-wrap:balance}
+.giro-llamado .button{margin-top:30px}
+
+.giro-vecinos{padding-top:84px;padding-bottom:20px}
+.giro-vecinos h2{font-size:26px;letter-spacing:-.02em}
+.giro-vecinos ul{list-style:none;margin:22px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.giro-vecinos a{display:grid;grid-template-columns:68px 1fr;column-gap:16px;align-items:center;padding:12px 18px 12px 12px;background:var(--white);border:1px solid var(--line);border-radius:14px;transition:border-color .2s}
+.giro-vecinos a:hover{border-color:var(--ink)}
+.giro-vecinos img{grid-row:span 2;width:68px;height:68px;object-fit:contain;border-radius:50%;background:var(--soft)}
+.giro-vecinos span{font-size:16px;font-weight:600;align-self:end}
+.giro-vecinos small{font-size:13px;color:var(--muted);align-self:start}
+
+.giro-pie-giros{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 18px;margin:20px 0 22px;font-size:13px}
+.giro-pie-giros>span{color:var(--muted)}
+.giro-pie-giros ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 16px}
+.giro-pie-giros a{text-decoration:underline;text-underline-offset:3px}
+.giro-pie-giros a:hover{color:var(--accent)}
+.giro-pie-giros [aria-current]{font-weight:600;color:var(--accent)}
+
+@media(max-width:900px){
+  .giro-hero{grid-template-columns:1fr;gap:20px;padding-bottom:24px}
+  .giro-retrato{max-width:320px;width:100%;margin:0 auto}
+  .giro-conversa{display:block}
+  .giro-encabezado,.giro-conversa .giro-encabezado{display:block;margin-bottom:32px}
+  .giro-faq h2{position:static}
+  .giro-encabezado p{margin-top:16px}
+  .giro-entrega-cuerpo{grid-template-columns:1fr;gap:30px}
+}
+@media(max-width:720px){
+  .giro-migas{padding-top:18px}
+  .giro-hero{padding-top:22px}
+  .giro-hero h1{font-size:clamp(36px,9.6vw,52px);line-height:1.05}
+  .giro-respuesta{font-size:16px}
+  .giro-bloque{padding-top:52px;padding-bottom:52px}
+  .giro-encabezado h2{font-size:clamp(32px,8.4vw,44px)}
+  .giro-chat{padding:18px;gap:12px;border-radius:16px}
+  .giro-mensaje{max-width:88%}
+  .giro-mensaje p{font-size:15px}
+  .giro-solicitud{padding:20px 20px 6px}
+  .giro-solicitud dl>div{grid-template-columns:1fr;gap:4px}
+  .giro-faq-lista{margin-top:28px}
+  .giro-llamado{padding:56px calc(var(--pad) + 22px)}
+  .giro-llamado p{font-size:15px}
+  .giro-vecinos{padding-top:60px}
+}

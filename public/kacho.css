@@ -179,3 +179,5 @@ body.account-open{overflow:hidden}
  .sales-sequence p{max-width:none}
  .offer-phases{grid-template-columns:1fr;gap:20px}
 }
+/* KAC-58: la búsqueda principal en el H1 de la home, arriba del lema (misma etiqueta que las páginas por giro). */
+.hero-kicker{display:block;width:max-content;font-size:14px;line-height:1;font-weight:600;letter-spacing:.01em;padding:8px 14px;margin-bottom:22px;border-radius:999px;background:var(--stage);color:var(--brand-copy)}

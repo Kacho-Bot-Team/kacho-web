@@ -2,8 +2,9 @@
   "name": "kacho-web",
   "private": true,
   "scripts": {
-    "test": "node --test tests/product.test.cjs",
-    "check": "node --check public/kacho.js && node --check public/product.js && node --check public/product-config.js"
+    "test": "node --test tests/product.test.cjs tests/giros.test.cjs tests/comparativas.test.cjs",
+    "check": "node --check public/kacho.js && node --check public/product.js && node --check public/product-config.js && node --check paginas/generar.mjs && node --check paginas/plantilla-giro.mjs && node --check paginas/plantilla-comparativa.mjs",
+    "giros": "node paginas/generar.mjs"
   },
   "devDependencies": {
     "playwright": "1.58.2"
