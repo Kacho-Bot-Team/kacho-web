@@ -283,3 +283,21 @@ test('el selector del hero conserva el giro al recargar; en móvil se oculta y e
   assert.equal(await page.locator('#menu-toggle').getAttribute('aria-expanded'), 'false');
   await page.close();
 });
+
+test('la home dice qué es con las palabras que se buscan: título, descripción y H1 (KAC-58)', async () => {
+  const html = await readFile(path.resolve(__dirname, '../public/index.html'), 'utf8');
+  const title = html.match(/<title>([^<]*)<\/title>/)[1];
+  assert.match(title, /^Chatbot para WhatsApp/);
+  assert.ok(title.length >= 30 && title.length <= 60, `título de ${title.length} caracteres`);
+  const desc = html.match(/<meta name="description" content="([^"]*)"/)[1];
+  assert.match(desc, /chatbot y agente de IA para WhatsApp/);
+  assert.ok(desc.length >= 120 && desc.length <= 160, `descripción de ${desc.length} caracteres`);
+  assert.equal(html.match(/<meta property="og:title" content="([^"]*)"/)[1], title);
+  assert.equal(html.match(/<meta property="og:description" content="([^"]*)"/)[1], desc);
+  const page = await browser.newPage({ viewport:{ width:390, height:844 }, reducedMotion:'reduce' });
+  await page.goto(base);
+  const h1 = await page.locator('h1').innerText();
+  await page.close();
+  assert.match(h1, /^Chatbot para WhatsApp/, 'la búsqueda principal abre el H1');
+  assert.match(h1, /Un vendedor\.\s*Muy de tu\s*negocio\./, 'el lema de la marca se queda');
+});
