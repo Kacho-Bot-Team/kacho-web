@@ -1,18 +1,18 @@
 // Plantilla de página por giro (KAC-64). Estructura: estrategia SEO + AEO, §6.1.
 // Todo el contenido sale en el HTML: los rastreadores de IA no ejecutan JavaScript.
 
-const SITIO = 'https://kachobot.com';
+export const SITIO = 'https://kachobot.com';
 
-const esc = (texto) => String(texto)
+export const esc = (texto) => String(texto)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
-const flecha = '<svg class="icon" aria-hidden="true"><use href="#arrow-up"/></svg>';
+export const flecha = '<svg class="icon" aria-hidden="true"><use href="#arrow-up"/></svg>';
 
 // Liga a la página del giro si ya existe; si no, a la demo de la home con ese giro elegido.
-const hrefGiro = (id, paginas) => paginas[id] ? `/giros/${paginas[id]}` : `/?giro=${id}#especialistas`;
+export const hrefGiro = (id, paginas) => paginas[id] ? `/giros/${paginas[id]}` : `/?giro=${id}#especialistas`;
 
-const absoluta = (href) => href.startsWith('http') ? href : SITIO + href;
+export const absoluta = (href) => href.startsWith('http') ? href : SITIO + href;
 
 export function paginaGiro({ giro, textos, giros, paginas, robots, contacto, hayIndice }) {
   const t = textos;

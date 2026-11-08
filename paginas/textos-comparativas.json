@@ -1,0 +1,181 @@
+{
+  "_nota": "Textos de las comparativas (KAC-58). Cada afirmación sobre el otro producto lleva el id de su fuente pública, con fecha de consulta; tests/comparativas.test.cjs lo comprueba. Lo que se dice de Kacho sale del sitio en vivo y de las decisiones del equipo (número nuevo: ADR 0017 de kacho). Las páginas se generan con `pnpm run giros`; no edites el HTML de public/alternativa-a/ a mano.",
+  "meta-business-agent": {
+    "miga": "Meta Business Agent o Kacho",
+    "color": "--lavanda",
+    "titulo": "Meta Business Agent o Kacho: cuál te conviene",
+    "descripcion": "Qué es Meta Business Agent, el agente gratis de la app de WhatsApp Business, y cuándo te conviene Kacho, el especialista de ventas de tu giro.",
+    "etiqueta": "Comparativa",
+    "h1": "Meta Business Agent o Kacho: cuál te conviene",
+    "lema": [
+      "Dos agentes de IA.",
+      "Cada uno con su trabajo."
+    ],
+    "respuesta": "Si lo que te preguntan es horario, ubicación o catálogo, Meta Business Agent, gratis para empezar y dentro de la app de WhatsApp Business, te puede alcanzar. Si antes de cotizar necesitas las preguntas de tu giro y que tu equipo reciba el caso armado, Kacho es un especialista que preparamos contigo, en un número nuevo.",
+    "actualizada": {
+      "fecha": "2026-11-08",
+      "texto": "Actualizada el 8 de noviembre de 2026"
+    },
+    "queEs": {
+      "titulo": [
+        "Qué es",
+        "Meta Business Agent."
+      ],
+      "intro": "Es el agente de IA que Meta presentó el 3 de junio de 2026 para WhatsApp y Messenger. Esto dicen Meta y la prensa, con la fuente de cada punto al pie de la página.",
+      "puntos": [
+        {
+          "titulo": "Vive en la app de WhatsApp Business",
+          "texto": "Se activa desde Herramientas, en la app, con el número que ya tienes registrado ahí. También responde en Messenger y en los anuncios que crees.",
+          "fuente": "meta-producto"
+        },
+        {
+          "titulo": "Aprende de lo que ya publicaste",
+          "texto": "Toma información de tu página de Facebook, de tus chats anteriores y de tu sitio web. Le puedes subir catálogos o listas de precios y darle instrucciones de tono.",
+          "fuente": "meta-producto"
+        },
+        {
+          "titulo": "Contesta y pregunta",
+          "texto": "Responde horarios, ubicación y dudas de productos, recomienda lo de tu catálogo y hace preguntas para entender qué necesita el cliente.",
+          "fuente": "meta-producto"
+        },
+        {
+          "titulo": "Te deja entrar cuando quieras",
+          "texto": "Le indicas qué temas siempre te debe pasar y puedes tomar el chat tú. Según Meta, cuando tomas el control aprende de esa conversación.",
+          "fuente": "meta-producto"
+        },
+        {
+          "titulo": "Empezar es gratis",
+          "texto": "Meta dice que los primeros pasos son gratuitos y anunció suscripciones de pago para empresas de todos los tamaños.",
+          "fuente": "meta-anuncio"
+        },
+        {
+          "titulo": "Ya está en México",
+          "texto": "Meta lo probó en México y en India antes de abrirlo a todo el mundo en junio de 2026.",
+          "fuente": "techcrunch"
+        }
+      ]
+    },
+    "tabla": {
+      "titulo": [
+        "Lado",
+        "a lado."
+      ],
+      "otro": "Meta Business Agent",
+      "filas": [
+        {
+          "criterio": "Quién lo prepara",
+          "otro": "Tú, desde la app de WhatsApp Business.",
+          "kacho": "Lo preparamos contigo: conocemos tu operación, cargamos tu catálogo, tu voz y tus reglas, y lo probamos con tu equipo.",
+          "fuente": "meta-producto"
+        },
+        {
+          "criterio": "En qué número",
+          "otro": "El que ya tienes registrado en la app de WhatsApp Business.",
+          "kacho": "Un número nuevo para tu marca, conectado por la API de WhatsApp. No vive en el celular de nadie.",
+          "fuente": "meta-producto"
+        },
+        {
+          "criterio": "De dónde aprende",
+          "otro": "Tu página de Facebook, tus chats anteriores, tu sitio y los catálogos e instrucciones que le subas.",
+          "kacho": "Tu catálogo o servicios, tus condiciones comerciales y ejemplos de cómo vende tu equipo.",
+          "fuente": "meta-producto"
+        },
+        {
+          "criterio": "Cómo conoce tu giro",
+          "otro": "Con lo que le das: tu información y tus instrucciones de tono y comportamiento.",
+          "kacho": "Viene de un especialista por giro que ya sabe qué preguntar antes de cotizar o agendar. Encima va lo tuyo.",
+          "fuente": "meta-producto"
+        },
+        {
+          "criterio": "Cuándo entra tu equipo",
+          "otro": "Tú eliges qué temas siempre te pasa y puedes tomar el chat cuando quieras.",
+          "kacho": "Lo definimos desde el inicio. Tu equipo recibe el caso con lo que el cliente ya contestó.",
+          "fuente": "meta-producto"
+        },
+        {
+          "criterio": "Para empezar",
+          "otro": "Los primeros pasos son gratuitos; Meta anunció suscripciones de pago.",
+          "kacho": "Se cotiza a tu medida después de la demo: puesta en marcha, operación mensual y mensajería según uso.",
+          "fuente": "meta-anuncio"
+        }
+      ]
+    },
+    "cuando": {
+      "otro": {
+        "titulo": "Meta Business Agent te alcanza si…",
+        "puntos": [
+          "casi todo lo que te preguntan es horario, ubicación, catálogo o disponibilidad;",
+          "prefieres configurarlo tú desde la app, cuando tengas un rato;",
+          "quieres probar un agente sin pagar para empezar."
+        ]
+      },
+      "kacho": {
+        "titulo": "Kacho tiene sentido si…",
+        "puntos": [
+          "antes de cotizar o agendar necesitas datos que solo pregunta alguien del giro: metros y uso del piso, zona y presupuesto, recibo de luz y tipo de techo;",
+          "quieres que alguien prepare el agente contigo y lo pruebe con tu equipo antes de soltarlo con clientes;",
+          "tu asesor tiene que recibir el caso armado, no un chat que leer desde el principio."
+        ]
+      }
+    },
+    "ejemplo": {
+      "giro": "materiales",
+      "titulo": [
+        "Un ejemplo de",
+        "Kacho Materiales."
+      ],
+      "intro": "Ejemplo ilustrativo. Una distribuidora recibe la pregunta de siempre; Kacho hace las del giro antes de pasarla a tu equipo."
+    },
+    "faq": [
+      [
+        "¿Meta Business Agent ya funciona en México?",
+        "Sí. Meta lo probó en México y en India antes de abrirlo a todo el mundo en junio de 2026. Su página aclara que algunas funciones todavía no están disponibles para todas las empresas."
+      ],
+      [
+        "¿Cuánto cuesta Meta Business Agent?",
+        "Meta dice que empezar es gratis y anunció suscripciones de pago. Su página del producto no publica precios: revísalos ahí antes de decidir, porque pueden cambiar."
+      ],
+      [
+        "¿Puedo tener los dos?",
+        "Pueden vivir en números distintos: Meta Business Agent en el número de tu app de WhatsApp Business y Kacho en el número nuevo de tu marca. En la propuesta vemos a cuál mandas a tus clientes."
+      ],
+      [
+        "¿Quién cierra la venta con Kacho?",
+        "Tu equipo. Kacho atiende, hace las preguntas del giro y prepara el siguiente paso, una solicitud de cotización o de visita. La negociación y el cierre se quedan con tu gente."
+      ],
+      [
+        "¿Qué pasa con mi número de siempre si elijo Kacho?",
+        "Sigue donde está. Kacho trabaja en un número nuevo para tu marca, y en la propuesta vemos cómo llegan ahí tus clientes: el botón de tu página, tus anuncios, tu firma de correo."
+      ]
+    ],
+    "llamado": {
+      "titulo": [
+        "¿Quieres ver a tu",
+        "especialista?"
+      ],
+      "texto": "Cuéntanos qué vendes y preparamos una demo con las preguntas de tu giro."
+    },
+    "especialistas": [
+      "inmobiliaria",
+      "materiales",
+      "construccion"
+    ],
+    "fuentes": {
+      "meta-producto": {
+        "titulo": "Meta Business Agent en WhatsApp — página del producto, WhatsApp for Business",
+        "url": "https://whatsappbusiness.com/es-la/products/business-app-ai-agent/",
+        "consultada": "2026-11-08"
+      },
+      "meta-anuncio": {
+        "titulo": "Presentamos Meta Business Agent — blog de WhatsApp Business, 3 de junio de 2026",
+        "url": "https://whatsappbusiness.com/es-la/blog/introducing-meta-business-agent-ai/",
+        "consultada": "2026-11-08"
+      },
+      "techcrunch": {
+        "titulo": "Meta’s AI agent for WhatsApp Business is now available globally — TechCrunch, 3 de junio de 2026",
+        "url": "https://techcrunch.com/2026/06/03/metas-ai-agent-for-whatsapp-business-is-now-available-globally/",
+        "consultada": "2026-11-08"
+      }
+    }
+  }
+}
