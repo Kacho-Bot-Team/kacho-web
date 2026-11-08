@@ -301,3 +301,16 @@ test('la home dice qué es con las palabras que se buscan: título, descripción
   assert.match(h1, /^Chatbot para WhatsApp/, 'la búsqueda principal abre el H1');
   assert.match(h1, /Un vendedor\.\s*Muy de tu\s*negocio\./, 'el lema de la marca se queda');
 });
+
+test('ninguna página promete usar el número actual del cliente: Kacho trabaja en uno nuevo (ADR 0017 de kacho)', async () => {
+  const { readdir } = require('node:fs/promises');
+  const publico = path.resolve(__dirname, '../public');
+  const paginas = ['index.html', ...(await readdir(path.join(publico, 'giros'))).map((f) => `giros/${f}`),
+    ...(await readdir(path.join(publico, 'alternativa-a'))).map((f) => `alternativa-a/${f}`)];
+  for (const p of paginas) {
+    const html = await readFile(path.join(publico, p), 'utf8');
+    assert.doesNotMatch(html, /Revisamos tu número/, `${p} todavía dice «Revisamos tu número»`);
+  }
+  const home = await readFile(path.join(publico, 'index.html'), 'utf8');
+  assert.match(home.match(/¿Se conecta con mi WhatsApp\?[\s\S]*?<\/details>/)[0], /número nuevo/);
+});
