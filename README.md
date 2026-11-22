@@ -85,3 +85,14 @@ Vercel está conectado a este repo:
 ## Derechos
 
 El código y el arte de Kacho no tienen licencia abierta: todos los derechos reservados. La tipografía Instrument Sans se distribuye bajo la SIL Open Font License; ver `OFL-instrument-sans.txt`.
+
+## Analítica web
+
+`public/metricool.js` carga el tracker de Metricool de forma asíncrona solo en
+`kachobot.com` y `www.kachobot.com`. Localhost y previews no envían visitas.
+El hash del tracker es un identificador público incluido en el código que recibe
+el navegador; no es una credencial de la API de Metricool.
+La inicialización ocurre una vez por carga del documento y un fallo del tracker
+no interrumpe la web. Tras publicar, visitar el dominio y verificar la conexión
+en Metricool. La integración comienza a medir desde la instalación, sin importar
+históricos ni conectar la API al tablero interno.
