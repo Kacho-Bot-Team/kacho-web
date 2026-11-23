@@ -107,6 +107,10 @@ al día, no dice nada. `kacho-web` no lo lleva porque es público (ver «Nunca»
   enlace al PR o al ADR. Si cambian el rumbo, van también al documento «Cómo trabajamos en Kacho» y a la
   descripción del proyecto.
 - Lo que todavía no aceptan los tres se escribe como **propuesta**, diciendo quién falta.
+- **Excepción, desde el 2026-11-23 (KAC-225):** en las áreas Backend e Infraestructura decide quien las lleva,
+  sin esperar a los otros dos. Quién es lo dice la viñeta «Quién decide» del documento «Cómo trabajamos en
+  Kacho». Sus decisiones se escriben como `Decidido por <nombre> (AAAA-MM-DD)`, y lo que propongan los demás
+  en esas áreas necesita su aprobación.
 - Si aparece trabajo nuevo, va en **otro ticket**, ligado al actual. No se agranda el que estás haciendo.
 - Si algo te bloquea, márcalo como bloqueado y di en el ticket qué falta y de quién depende.
 - **Antes de abrir el PR**, o si tu rama ya lleva más de un día, trae lo nuevo de `main`:
