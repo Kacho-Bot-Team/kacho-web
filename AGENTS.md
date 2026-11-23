@@ -54,6 +54,9 @@ carpeta nueva hasta que se agrega a su lista en el mismo PR: así la decisión q
 - el código de una herramienta interna va en `kacho`, como `apps/presentaciones`;
 - sus datos de marca, comercial o equipo se leen desde tu copia local de `kacho-interno`. No se copian a `kacho`,
   y lo que la herramienta genera no se versiona: va en su `.gitignore`;
+  - **Excepción, desde el 2026-11-23 (KAC-230):** lo que una persona revisa antes de mandárselo a un prospecto sí
+    se versiona en `kacho-interno`, porque rehacerlo cuesta y no sale igual, y queda como registro de lo que vio
+    cada uno. Hoy son las fichas y las ventas simuladas de `docs/prospeccion/`;
 - no se guarda en git una copia de Linear (tickets, comentarios ni documentos), en ningún repo. La fuente es
   Linear, y la copia se queda vieja apenas se guarda.
 
