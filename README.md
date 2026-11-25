@@ -96,3 +96,17 @@ La inicialización ocurre una vez por carga del documento y un fallo del tracker
 no interrumpe la web. Tras publicar, visitar el dominio y verificar la conexión
 en Metricool. La integración comienza a medir desde la instalación, sin importar
 históricos ni conectar la API al tablero interno.
+
+## Iconos del sitio
+
+`public/assets/kacho-icon.svg` es la nariz de marca usada como favicon vectorial.
+`public/favicon-32x32.png` es su respaldo rasterizado de 32 × 32.
+`public/apple-touch-icon.png` es la misma nariz rasterizada a 180 × 180, sobre el
+fondo opaco `#f6f1ea` del sitio, para guardar la página en el inicio de iPad/iPhone.
+Al cambiar el SVG, regenerar ambos PNG conservando proporciones; no redibujar la marca.
+Safari aplica la máscara del sistema al icono. No se activa modo standalone ni service worker.
+
+Tras publicar, comprobar `/apple-touch-icon.png` y agregar un acceso nuevo desde
+Safari → Compartir → Añadir a pantalla de inicio. Si el acceso anterior conserva
+su imagen, eliminar solo ese acceso y crearlo de nuevo. El preview verifica el recurso;
+la pantalla de inicio requiere comprobación manual en el dispositivo.
